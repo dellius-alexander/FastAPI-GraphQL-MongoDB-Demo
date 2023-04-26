@@ -1,0 +1,7 @@
+06:00:29 DEBUG Using selector: KqueueSelector
+06:00:29 DEBUG Using selector: KqueueSelector
+06:00:29 DEBUG Starting new HTTP connection (1): 0.0.0.0:8000
+06:00:29 DEBUG http://0.0.0.0:8000 "POST /user HTTP/1.1" 200 203
+06:00:29 DEBUG Starting new HTTP connection (1): 0.0.0.0:8000
+06:00:29 DEBUG http://0.0.0.0:8000 "POST /user HTTP/1.1" 200 200
+06:00:29 DEBUG Using selector: KqueueSelector

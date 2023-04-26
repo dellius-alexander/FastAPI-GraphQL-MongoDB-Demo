@@ -1,0 +1,94 @@
+##########################################################################
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# physics_app  Copyright (C) 2022  Dellius Alexander
+# This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+# This is free software, and you are welcome to redistribute it
+# under certain conditions; type `show c' for details.
+##########################################################################
+# See setuptools home for more info:
+# https://setuptools.pypa.io/en/latest/userguide/index.html
+##########################################################################
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fastapi_graphql_demo"
+version = "1.1"
+description = "Demo of FastAPI and GraphQL integration"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file="LICENSE" }
+
+authors = [
+  { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
+]
+maintainers = [
+    { name="Dellius Alexander", email="info@hyfisolutions.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[requires]
+files=["requirements.txt"]
+
+[dependencies]
+fastapi = "^0.95.1"
+graphene = "^3.2.2"
+graphene-mongo = "^0.2.15"
+graphql-core = "^3.2.3"
+graphql-relay = "^3.2.0"
+mongoengine = "^0.27.0"
+motor = "^3.1.2"
+python-multipart = "^0.0.5"
+pydantic = "^1.8.2"
+uvicorn = "^0.15.0"
+uvloop = "^0.16.0"
+
+
+[dev-dependencies]
+pytest = "^6.2.5"
+pytest-asyncio = "^0.15.1"
+pytest-cov = "^3.0.0"
+pytest-mock = "^3.6.1"
+pytest-sugar = "^0.9.4"
+pytest-xdist = "^2.4.0"
+uvicorn = "^0.15.0"
+uvloop = "^0.16.0"
+pylint = "^2.11.1"
+black = "^21.12b0"
+isort = "^5.9.3"
+flake8 = "^4.0.1"
+requests = "^2.26.0"
+
+[integrations]
+mongodb = { version = "4.3.3" }
+
+#[project.urls]
+#"Homepage" = "https://github.com/dellius-alexander/fastapi_graphql_demo.git"
+#"Bug Tracker" = "https://github.com/dellius-alexander/fastapi_graphql_demo.git/issues"
+
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+[project.scripts]
+start = "uvicorn main:app --port 8000 --reload"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--verbose --color=yes --trace"
+testpaths = [
+    "tests",
+    "integration",
+]

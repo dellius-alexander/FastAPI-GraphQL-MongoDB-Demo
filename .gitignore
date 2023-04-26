@@ -1,0 +1,5 @@
+venv
+/**/.env
+logs/**
+/**/*.log
+.devcontainer/.backup

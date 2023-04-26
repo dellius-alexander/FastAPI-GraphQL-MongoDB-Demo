@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "standard": {
+      "format": "[%(asctime)s] [%(levelname)s] [%(name)s][%(lineno)s]: %(message)s",
+      "datefmt": "%Y-%m-%d %H:%M:%S"
+    },
+    "CustomFormatter": {
+      "()": "MyLogger.Formatters.CustomFormatter",
+      "format": "[%(asctime)s] [%(levelname)s] [%(name)s][%(lineno)s]: %(message)s",
+      "datefmt": "%Y-%m-%d %H:%M:%S",
+      "style": "%"
+    }
+  },
+  "handlers": {
+    "default": {
+      "level": "DEBUG",
+      "class": "logging.StreamHandler",
+      "formatter": "CustomFormatter"
+    },
+    "file_handler": {
+      "class": "MyLogger.Handlers.CustomTimedRotatingFileHandler",
+      "filename": "logs/logs.log",
+      "when": "midnight",
+      "interval": 1,
+      "backupCount": 0,
+      "encoding": "utf-8",
+      "delay": false,
+      "utc": false
+    }
+  },
+  "loggers": {
+    "root": {
+      "handlers": ["default", "file_handler"],
+      "level": "DEBUG",
+      "propagate": true
+    }
+  }
+}

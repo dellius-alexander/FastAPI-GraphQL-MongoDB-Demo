@@ -1,0 +1,27 @@
+### Request from root path
+// Our server works with the following GraphQL schema
+GET http://{{devServer}}/
+
+
+### Request for all users
+GRAPHQL http://{{devServer}}/user
+Content-Type: application/json
+
+{users{ name, email, age, roles, password, lastUpdated }}
+
+
+### Request for user info for brian
+// We just write a GraphQL query in the request body
+GRAPHQL http://{{devServer}}/user
+Content-Type: application/json
+
+{ users(email: "brian@example.com") { name, email, age, roles, password, lastUpdated } }
+
+
+### Request to create new user in db
+// We just write a GraphQL query in the request body
+GRAPHQL http://{{devServer}}/user
+Content-Type: application/json
+
+{createUser(name: "Jackie Brown", email: "jackie@example.com", password: "jackie123", age: 21, roles: ["subscriber","user"]) { name, email, password, age, roles }}
+

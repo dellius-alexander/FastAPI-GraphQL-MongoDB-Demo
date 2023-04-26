@@ -1,0 +1,6 @@
+docker-compose.yaml
+.dockerignore
+.gitignore
+test_main.http
+.devcontainer
+.vscode
