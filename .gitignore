@@ -7,6 +7,6 @@ venv
 tests/logs/**
 .vscode
 .idea
-__pycache__
+/**/__pycache__
 
 
