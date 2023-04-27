@@ -7,4 +7,6 @@ venv
 tests/logs/**
 .vscode
 .idea
+__pycache__
+
 
