@@ -6,16 +6,15 @@ from typing import Dict, Union, Any
 from starlette.responses import JSONResponse
 from main import app
 from models.Response import JSONResponseModel
-from models.Users import UserModel, User as UserAgent
-from schema.Users import schema as user_schema, Query as UserQuery
-from MyLogger import getLogger as GetLogger
-
-# -----------------------------------------------------------------------------
+from schema.Users import schema as user_schema
+# Get the logger
+from MyLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
-
-
 # -----------------------------------------------------------------------------
 # Define the GraphQL endpoint
+# -----------------------------------------------------------------------------
+
+
 @app.post("/user",
           response_model=JSONResponseModel,
           status_code=200,
@@ -58,7 +57,7 @@ async def users(query: Union[Dict[str, Any]]) -> JSONResponse:
     """
     log.info("Request: %s" % json.dumps(query, indent=2))
     # Insert some users
-    if isinstance(query, Dict) and "query" in query or "mutation" in query:
+    if isinstance(query, Dict) and "query" in query:
         # Execute the GraphQL query
         result = await user_schema.execute_async(query["query"])
         log.info("Response: %s" % [result])
@@ -66,7 +65,31 @@ async def users(query: Union[Dict[str, Any]]) -> JSONResponse:
         if result.errors:
             err = JSONResponse(
                 content={"errors": [str(error) for error in result.errors], "msg": result.data},
-                status_code=400,
+                status_code=404,
+                headers={"Content-Type": "application/json"}
+            )
+            log.error([err.body.decode("utf-8")],
+                      exc_info=traceback.format_exc(),
+                      stack_info=True)
+            return err
+        else:
+            resp = JSONResponse(
+                content={"data": result.data, "errors": result.errors},
+                status_code=200,
+                headers={"Content-Type": "application/json"},
+                media_type="application/json"
+            )
+            log.info([resp.body.decode("utf-8")])
+            return resp
+    elif isinstance(query, Dict) and "mutation" in query:
+        # Execute the GraphQL query
+        result = await user_schema.execute_async(query["mutation"])
+        log.info("Response: %s" % [result])
+        # Return the result as a JSON response
+        if result.errors:
+            err = JSONResponse(
+                content={"errors": [str(error) for error in result.errors], "msg": result.data},
+                status_code=404,
                 headers={"Content-Type": "application/json"}
             )
             log.error([err.body.decode("utf-8")],

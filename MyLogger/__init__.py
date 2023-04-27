@@ -20,6 +20,4 @@ if not logging.root.handlers:
 #     log = logging.getLogger(__name__)
 
 
-def getLogger(name: str):
-    return logging.getLogger(name)
 

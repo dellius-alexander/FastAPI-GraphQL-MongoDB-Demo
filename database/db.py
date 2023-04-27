@@ -1,13 +1,12 @@
 import json
-import time
 import traceback
 from mongoengine import connect, ConnectionFailure
 import os
-from mongoengine import Document
 from models.Users import User as UserModel
-from MyLogger import getLogger
+# Get the logger
+from MyLogger.Logger import getLogger as GetLogger
+log = GetLogger(__name__)
 
-log = getLogger(__name__)
 # Get the port from the environment variables
 MONGODB_USERNAME = os.getenv("APP_USER")
 MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD")
@@ -127,7 +126,5 @@ def init_db():
                     ensure_ascii=True
                 )
             )
-    except Exception as e:
-        log.error(e,
-                  exc_info=traceback.format_exc(),
-                  stack_info=True)
+    except Exception:
+        pass

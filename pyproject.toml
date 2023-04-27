@@ -76,13 +76,13 @@ requests = "^2.26.0"
 [integrations]
 mongodb = { version = "4.3.3" }
 
-#[project.urls]
-#"Homepage" = "https://github.com/dellius-alexander/fastapi_graphql_demo.git"
-#"Bug Tracker" = "https://github.com/dellius-alexander/fastapi_graphql_demo.git/issues"
-
+[project.urls]
+"Homepage" = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git"
+"Bug Tracker" = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git/issues"
 # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+
 [project.scripts]
-start = "uvicorn main:app --port 8000 --reload"
+start = "uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
 
 
 [tool.pytest.ini_options]

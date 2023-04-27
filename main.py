@@ -10,15 +10,14 @@ dotenv.load_dotenv(
     verbose=True,
     encoding="utf-8"
 )
-
+# -----------------------------------------------------------------------------
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database.db import connect_to_mongo, init_db
-from MyLogger import getLogger as GetLogger
+# Get the logger
+from MyLogger.Logger import getLogger as GetLogger
+log = GetLogger(__name__)
 
 # -----------------------------------------------------------------------------
-# Get the logger
-log = GetLogger(__name__)
 log.info("\n%s\nStarting the application...\nGlobals: \n%s\n%s", ("-" * 90), globals(), ("-" * 90))
 # -----------------------------------------------------------------------------
 # Create a FastAPI instance
@@ -35,25 +34,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 # -----------------------------------------------------------------------------
+# Add the routes
+from routes.startup import startup_event
 from routes.index import root
 from routes.users import users
 
 
 # -----------------------------------------------------------------------------
-@app.on_event("startup")
-async def startup_event():
-    connect_to_mongo()
-    init_db()
-    log.info("API Routes: %s" % app.routes)
-    log.info("Application started")
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
 # Main entry point
 if __name__ == "__main__":
-    init_db()
     uvicorn.run(
         app,
         root_path="/",

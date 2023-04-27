@@ -1,10 +1,15 @@
 import json
 import time
-from graphene import ObjectType, String, Schema, List, Field, InputObjectType, Mutation, relay, DateTime, Int
+import traceback
+from typing import Any, Dict
+
+from graphene import ObjectType, String, Schema, List, Field, InputObjectType, Mutation, relay, DateTime, Int, \
+    Boolean
 from graphene_mongo import MongoengineObjectType
 from mongoengine import NotUniqueError, DoesNotExist
 from models.Users import User
-from MyLogger import getLogger as GetLogger
+# Get the logger
+from MyLogger.Logger import getLogger as GetLogger
 
 log = GetLogger(__name__)
 
@@ -40,53 +45,54 @@ class CreateUserMutation(Mutation):
     class Arguments:
         user_data = CreateUserInput(required=True)
 
-    def mutate(self, info, user_data=None):
+    def mutate(self, info, user_data):
         try:
-            log.info(info)
-            user = User(
-                name=user_data.name,
-                email=user_data.email,
-                password=user_data.password,
-                age=user_data.age,
-                roles=user_data.roles,
-                last_updated=user_data.last_update
-            )
-            result = user.save()
-            log.info("result: %s" % result)
-            if result:
-                if user:
-                    return f"User {user.name} created successfully!"
-                else:
-                    return f"User with email {user.email} already exists!"
-            return CreateUserMutation(user=user)
+            log.info("user_data: %s" % json.dumps(user_data, indent=4))
+            user = User.objects.get(email=user_data.email)
+            user.name = user_data.name
+            user.email = user_data.email
+            user.password = user_data.password
+            user.age = user_data.age
+            user.roles = user_data.roles
+            user.last_updated = user_data.last_updated
+            user.save()
+            ok = True
+            log.info("user: %s" % json.dumps(user.to_json(), indent=4))
+            return CreateUserMutation(user, ok)
         except NotUniqueError as e:
-            return {"error": f"User with email {user.email} already exists!\n{e}"}
+            return {"error": f"User with email {user.email} unable to be updated!\n{e}"}
 
 
 # -----------------------------------------------------------------------------
 # Define the GraphQL mutations
-class Mutation(ObjectType):
+class UserMutations(ObjectType):
     create_user = CreateUserMutation.Field()
 
 
 # -----------------------------------------------------------------------------
 # Define the GraphQL schema
 class Query(ObjectType):
-    users = List(of_type=UserSchema,
-                 name=String(required=False),
-                 email=String(required=False),
-                 age=Int(required=False),
-                 roles=List(String, required=False)
-                 )
-    create_user = Field(type_=UserSchema,
+    search = List(of_type=UserSchema,
+                  name=String(required=False),
+                  email=String(required=False),
+                  age=Int(required=False),
+                  roles=List(String, required=False)
+                  )
+    delete_users = List(of_type=UserSchema,
+                        name=String(required=False),
+                        email=String(required=False),
+                        age=Int(required=False),
+                        roles=List(String, required=False)
+                        )
+    create_users = List(of_type=UserSchema,
                         name=String(),
-                        password=String(),
                         email=String(),
+                        password=String(),
                         age=Int(),
                         roles=List(String)
                         )
 
-    def resolve_users(self, info, name=None, email=None, age=None, roles=None, **kwargs):
+    def resolve_search(self, info, name=None, email=None, age=None, roles=None, **kwargs):
         try:
             query = {}
             if name:
@@ -98,6 +104,7 @@ class Query(ObjectType):
             if roles:
                 query['roles'] = {'$in': roles}
             users_list = list(User.objects.filter(**query))
+
             # users_list = list(User.objects.all())
             log.info("users_list: %s" % users_list)
             return users_list
@@ -105,7 +112,7 @@ class Query(ObjectType):
             # Handle MongoDB connection error
             raise Exception(f"Failed to connect to MongoDB: {e}")
 
-    def resolve_create_user(self, info, name, email, password, age, roles, **kwargs):
+    def resolve_create_users(self, info, name, email, password, age, roles=None):
         if roles is None:
             roles = ["user"]
         try:
@@ -117,14 +124,43 @@ class Query(ObjectType):
                 age=age,
                 roles=roles
             ).save()
-            log.info("New User Response: %s" % [new_user.to_json()])
+            log.info("New User Response: \n%s" % json.dumps(new_user.to_json(), indent=4))
             if new_user:
-                return new_user
-            else:
-                return new_user
+                return [new_user]
         except (ConnectionError, DoesNotExist) as e:
             # Handle MongoDB connection error or user not found error
             raise Exception(f"Failed to create user: {e}")
+
+    def resolve_delete_users(self, info, name=None, email=None, age=None, roles=None, **kwargs):
+        try:
+            query = {}
+            if name:
+                query['name'] = name
+            if email:
+                query['email'] = email
+            if age:
+                query['age'] = age
+            if roles:
+                query['roles'] = {'$in': roles}
+            users_list = list(User.objects.filter(**query))
+            log.info("users_list: %s" % users_list)
+            status = Dict[Any, Any]
+            if len(users_list) > 0:
+                for i, user in enumerate(users_list):
+                    log.info("Deleting user: %s" % user.to_json())
+                    response = user.delete()
+                    log.info("Delete response: %s" % response)
+                    if not response:
+                        status = {i: ["success", user.to_json()]}
+            else:
+                status = {"error": "No users found!"}
+            log.info("status: %s" % status)
+            return [status]
+        except (ConnectionError, DoesNotExist) as e:
+            # Handle MongoDB connection error
+            log.error(f"Failed to connect to MongoDB: {e}",
+                      exc_info=traceback.format_exc(),
+                      stack_info=True)
 
 
 # -----------------------------------------------------------------------------

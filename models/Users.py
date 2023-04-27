@@ -9,9 +9,9 @@ from mongoengine.fields import (
     ListField,
 )
 from pydantic import BaseModel
-from MyLogger import getLogger as GetLogger
 from utils.hash import hash_password
-
+# Get the logger
+from MyLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
 
 
@@ -37,6 +37,9 @@ class User(Document):
             self.password = hash_password(self.password)
             return super(User, self).save(*args, **kwargs)
         except NotUniqueError as e:
+            log.error(f"Email already exists. {e}",
+                      exc_info=True,
+                      stack_info=True)
             return {"error": f"Email already exists. {e}"}
 
 

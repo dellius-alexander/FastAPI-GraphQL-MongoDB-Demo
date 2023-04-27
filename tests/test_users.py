@@ -1,3 +1,5 @@
+import traceback
+
 import pytest
 import requests
 import json
@@ -7,9 +9,35 @@ from MyLogger import getLogger as GetLogger
 
 log = GetLogger(__name__)
 
+# -----------------------------------------------------------------------------
+root_url = "http://localhost:8000"
+user_url = root_url + "/user"
+
 
 # -----------------------------------------------------------------------------
-def test_root():
+@pytest.mark.asyncio
+def test_delete_user():
+    """
+    Delete a user from the database
+    """
+    try:
+        response = requests.post(
+            url=user_url,
+            json={"mutation": "{deleteUsers(email: \"jackie@example.com\"){name, email}}"},
+            headers={"Content-Type": "application/json"},
+            stream=True
+        )
+        assert response.status_code == 200
+        print("\nResponse Status code: %s" % [response.status_code])
+        print("\nResponse: %s" % response.json())
+    except Exception as e:
+        print("\nException: %s" % e)
+        print("\nTraceback: %s" % traceback.format_exc())
+
+
+# -----------------------------------------------------------------------------
+@pytest.mark.asyncio
+async def test_root():
     """
     Test the root endpoint
     """
@@ -43,7 +71,9 @@ async def test_user():
     else:
         print("\nResponse: %s" % response.text)
     assert response.status_code == 200
-    assert response.json()["data"]["users"] == [{'name': 'Brian Smith', 'email': 'brian@example.com', 'age': 39, 'password': '$2b$12$seD34UJYHJ4dopfjDhK1T.7vEh8Pt2k4XZZe/tTt3dh3gAuREiiKa', 'lastUpdated': '2023-04-26T08:47:37'}]
+    assert response.json()["data"]["users"] == [{'name': 'Brian Smith', 'email': 'brian@example.com', 'age': 39,
+                                                 'password': '$2b$12$seD34UJYHJ4dopfjDhK1T.7vEh8Pt2k4XZZe/tTt3dh3gAuREiiKa',
+                                                 'lastUpdated': '2023-04-26T08:47:37'}]
 
 
 # -----------------------------------------------------------------------------
@@ -83,7 +113,8 @@ async def test_create_user():
     Test the create user endpoint
     """
     print("\nTesting the create user endpoint...")
-    request_body = {"query": "{createUser(name: \"Jackie Brown\", email: \"jackie@example.com\", password: \"jackie123\", age: 21, roles: [\"subscriber\",\"user\"]) { name, email, password, age, roles }}"}
+    request_body = {
+        "query": "{createUser(name: \"Jackie Brown\", email: \"jackie@example.com\", password: \"jackie123\", age: 21, roles: [\"subscriber\",\"user\"]) { name, email, password, age, roles }}"}
     print("\nRequest body: %s" % request_body)
     # Execute the GraphQL query
     response = requests.post(
@@ -101,6 +132,7 @@ async def test_create_user():
             headers={"Content-Type": "application/json"},
             stream=True
         )
+
     print("\nResponse Status code: %s" % [response.status_code])
     print("\nHeaders: %s" % response.headers)
     print("\nResponse: %s" % json.dumps(response.json()["data"], indent=2))
@@ -110,4 +142,3 @@ async def test_create_user():
     assert response.status_code == 200
     assert verify.status_code == 200
     assert response.json()["data"]["createUser"] == verify.json()["data"]["users"][0]
-

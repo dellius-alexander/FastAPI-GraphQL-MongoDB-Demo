@@ -70,4 +70,5 @@ services:
 #      ME_CONFIG_SITE_SSL_KEY_PATH     | ''              | SSL key file.
     depends_on:
       - mongo
+      - app
 

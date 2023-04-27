@@ -1,6 +1,9 @@
-from starlette.responses import Response, HTMLResponse
+from starlette.responses import HTMLResponse
 
 from main import app
+# Get the logger
+from MyLogger.Logger import getLogger as GetLogger
+log = GetLogger(__name__)
 
 # -----------------------------------------------------------------------------
 html = """
@@ -184,3 +187,5 @@ async def root() -> HTMLResponse:
 #         status_code=200,
 #         headers={"Content-Type": "application/json"}
 #     )
+
+

@@ -7,7 +7,7 @@ GET http://{{devServer}}/
 GRAPHQL http://{{devServer}}/user
 Content-Type: application/json
 
-{users{ name, email, age, roles, password, lastUpdated }}
+{ search{ name, email, age, roles, password, lastUpdated } }
 
 
 ### Request for user info for brian
@@ -15,7 +15,7 @@ Content-Type: application/json
 GRAPHQL http://{{devServer}}/user
 Content-Type: application/json
 
-{ users(email: "brian@example.com") { name, email, age, roles, password, lastUpdated } }
+{ search(email: "brian@example.com") { name, email, age, roles, password, lastUpdated } }
 
 
 ### Request to create new user in db
@@ -23,5 +23,13 @@ Content-Type: application/json
 GRAPHQL http://{{devServer}}/user
 Content-Type: application/json
 
-{createUser(name: "Jackie Brown", email: "jackie@example.com", password: "jackie123", age: 21, roles: ["subscriber","user"]) { name, email, password, age, roles }}
 
+{ createUsers(name: "Jackie Brown", email: "jackie@example.com", password: "jackie123", age: 21, roles: ["subscriber","user"]) { name, email, password, age, roles } }
+
+
+#### Delete user from db
+// We just write a GraphQL query in the request body
+GRAPHQL http://{{devServer}}/user
+Content-Type: application/json
+
+{ deleteUsers(email: "jackie@example.com") { name, email, password, age, roles } }

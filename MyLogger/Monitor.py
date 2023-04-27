@@ -1,8 +1,8 @@
 from pymongo import monitoring
-from MyLogger import getLogger
+from MyLogger.Logger import getLogger as GetLogger
 from database.db import connect_to_mongo
 
-log = getLogger(__name__)
+log = GetLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
