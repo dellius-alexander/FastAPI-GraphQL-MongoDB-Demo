@@ -11,12 +11,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      APP_PORT: 8000
+      APP_USER: alpha
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: developer
+      MONGODB_URL: mongo
+      MONGODB_PORT: 27017
+      MONGODB_DATABASE: Hyfi
+      MONGO_EXPRESS_PORT: 8081
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - name: Start docker compose
-        run: docker-compose -f "docker-compose.yaml" up -d --build --remove-orphans --force-recreate
+        run: docker-compose up -d --build --remove-orphans --force-recreate
 
       - name: Execute tests
         run: docker-compose run app pytest
