@@ -30,7 +30,7 @@ jobs:
       - name: Setup virtual environment
         run: |
           python3 -m pip install pytest
-          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt --upgrade pip; fi
+          if [ -f requirements.txt ]; then python3 -m pip install -r requirements.txt --upgrade pip; fi
 
       - name: Start docker compose
         run: |
