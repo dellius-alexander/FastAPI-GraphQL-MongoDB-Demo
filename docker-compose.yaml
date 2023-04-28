@@ -39,6 +39,7 @@ services:
       PORT: ${MONGODB_PORT}
     depends_on:
       - mongo
+      - mongo-express
     volumes:
       - .:/app
   # Mongo Express service

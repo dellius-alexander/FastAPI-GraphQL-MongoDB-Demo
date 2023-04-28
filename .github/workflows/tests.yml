@@ -12,10 +12,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
       - uses: actions/checkout@v2
-      - name: Set up Docker Compose
-        uses: docker/compose-action@v1
-        with:
-          args: up -d --build --remove-orphans --force-recreate
+
+      - name: Start docker compose
+        run: docker-compose -f "docker-compose.yaml" up -d --build --remove-orphans --force-recreate
+
       - name: Execute tests
         run: docker-compose run app pytest
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down
