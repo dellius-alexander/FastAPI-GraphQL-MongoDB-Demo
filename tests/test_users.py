@@ -7,7 +7,7 @@ from MyLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
 
 # -----------------------------------------------------------------------------
-root_url = "http://0.0.0.0:8000"
+root_url = "https://0.0.0.0:8000"
 user_url = root_url + "/user"
 
 log.info("root_url: %s" % root_url)
