@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import pytest
 import requests
 import json
@@ -5,6 +7,8 @@ import json
 # -----------------------------------------------------------------------------
 root_url = "http://0.0.0.0:8000"
 user_url = root_url + "/user"
+print("\nroot_url: %s" % root_url)
+print("\nuser_url: %s" % user_url)
 
 
 # -----------------------------------------------------------------------------
@@ -60,7 +64,9 @@ async def test_root():
     Test the root endpoint
     """
     print("Testing the root endpoint...")
-    response = requests.get(root_url)
+    response = requests.get(
+        url=root_url
+    )
     assert response.status_code == 200
     # assert response.json() == {"message": "Hello, World!"}
     print("\nResponse Status code: %s" % [response.status_code])
