@@ -1,17 +1,10 @@
-import traceback
 import pytest
 import requests
 import json
-from MyLogger.Logger import getLogger as GetLogger
-
-log = GetLogger(__name__)
 
 # -----------------------------------------------------------------------------
-root_url = "https://0.0.0.0:8000"
+root_url = "http://0.0.0.0:8000"
 user_url = root_url + "/user"
-
-log.info("root_url: %s" % root_url)
-log.info("user_url: %s" % user_url)
 
 
 # -----------------------------------------------------------------------------
