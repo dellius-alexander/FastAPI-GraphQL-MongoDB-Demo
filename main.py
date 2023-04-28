@@ -50,7 +50,7 @@ openapi_schema["info"]["title"] = "FastAPI, GraphQL, MongoDB Demo API"
 openapi_schema["info"]["version"] = "0.0.1"
 openapi_schema["info"]["description"] = "This is a demo API for FastAPI, GraphQL, MongoDB"
 
-with open("api-docs/openapi.yaml", "w") as f:
+with open("api-docs/openapi.json", "w") as f:
     f.write(json.dumps(openapi_schema, indent=4))
 # -----------------------------------------------------------------------------
 # Main entry point
