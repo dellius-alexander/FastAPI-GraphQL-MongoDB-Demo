@@ -27,7 +27,8 @@ jobs:
       - name: Setup virtual environment
         run: |
           python3 -m venv venv
-          . venv/bin/activate
+          . venv/bin/activate 
+          python3 -m pip install -r requirements.txt
 
       - name: Start docker compose
         run: docker-compose up -d --build --remove-orphans --force-recreate
