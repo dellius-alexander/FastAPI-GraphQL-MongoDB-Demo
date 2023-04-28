@@ -1,3 +1,6 @@
+[![Testing FastAPI, GraphQL, MongoDB, using Docker Compose](https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo/actions/workflows/tests.yml/badge.svg)](https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo/actions/workflows/tests.yml)
+
+
 # Demo FastAPI, GraphQL and MongoDB Integration
 
 This project integrates FastAPI, GraphQL and MongoDB to create a powerful and flexible API. 

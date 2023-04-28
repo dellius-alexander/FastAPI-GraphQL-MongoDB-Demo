@@ -29,19 +29,17 @@ jobs:
 
       - name: Setup virtual environment
         run: |
-          python -m venv venv 
-          . venv/bin/activate 
-          python -m pip install -r requirements.txt 
+          python -m pip install pytest
+          if [ -f requirements.txt ]; then python -m pip install -r requirements.txt --upgrade pip; fi
 
       - name: Start docker compose
         run: |
           docker-compose up -d --build --remove-orphans --force-recreate
-          docker ps -a       
+          docker ps -a 
 
       - name: Execute tests
         run: |
-          . venv/bin/activate
-          docker-compose exec -it app python3 -m pytest tests
+          python -m pytest
 
       - name: Stop containers
         if: always()
