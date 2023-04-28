@@ -41,7 +41,7 @@ jobs:
       - name: Execute tests
         run: |
           . venv/bin/activate
-          docker-compose exec app python3 -m pytest tests
+          docker-compose exec -it app python3 -m pytest tests
 
       - name: Stop containers
         if: always()
