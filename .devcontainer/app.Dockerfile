@@ -27,5 +27,4 @@ ENV PATH="/app/venv/bin:$PATH"
 ENV RUN_PORT=8000
 
 # Start the app
-ENTRYPOINT ["python3", "-m", "uvicorn"]
-CMD ["main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+ENTRYPOINT ["python3", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

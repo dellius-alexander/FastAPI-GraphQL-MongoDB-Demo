@@ -17,6 +17,7 @@ services:
     volumes:
       - ./.devcontainer/config/mongo/mongod.conf:/etc/mongod.conf
       - ./.devcontainer/config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+
   # Application service
   app:
     build:
@@ -42,6 +43,7 @@ services:
       - mongo-express
     volumes:
       - .:/app
+
   # Mongo Express service
   mongo-express:
     image: mongo-express:0.54.0

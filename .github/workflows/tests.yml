@@ -24,12 +24,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup virtual environment
+        run: |
+          python3 -m venv venv
+          . venv/bin/activate
+
       - name: Start docker compose
         run: docker-compose up -d --build --remove-orphans --force-recreate
 
       - name: Execute tests
-        run: docker-compose run app pytest
+        run: pytest tests
 
       - name: Stop containers
         if: always()
-        run: docker-compose -f "docker-compose.yml" down
+        run: docker-compose down
