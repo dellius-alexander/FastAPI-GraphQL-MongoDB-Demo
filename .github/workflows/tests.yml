@@ -29,7 +29,6 @@ jobs:
 
       - name: Setup virtual environment
         run: |
-          apt-get update -y 
           if [ -f requirements.txt ]; then python3 -m pip install --no-cache-dir --upgrade -r requirements.txt pip; fi 
 
       - name: Start docker compose
