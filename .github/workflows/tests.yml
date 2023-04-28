@@ -11,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.7", "3.8", "3.9", "3.10" ]
     env:
       APP_PORT: 8000
       APP_USER: alpha
@@ -26,15 +29,17 @@ jobs:
 
       - name: Setup virtual environment
         run: |
-          python -m venv venv
+          python -m venv venv 
           . venv/bin/activate 
-          python -m pip install -r requirements.txt
+          python -m pip install -r requirements.txt 
 
       - name: Start docker compose
         run: docker-compose up -d --build --remove-orphans --force-recreate
 
       - name: Execute tests
-        run: pytest tests
+        run: |
+          . venv/bin/activate
+          python3 -m pytest tests
 
       - name: Stop containers
         if: always()
