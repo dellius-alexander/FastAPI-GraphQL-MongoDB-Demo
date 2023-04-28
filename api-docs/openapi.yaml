@@ -1,0 +1,203 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "FastAPI, GraphQL, MongoDB Demo API",
+        "version": "0.0.1",
+        "description": "This is a demo API for FastAPI, GraphQL, MongoDB"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Root",
+                "operationId": "root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get a user by query field(s).",
+                "description": "Get a single user or a list of users",
+                "operationId": "users_user_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "Query",
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "A single user or a list of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JSONResponseModel"
+                                },
+                                "example": [
+                                    {
+                                        "id": "5f9f1b9b9b9b9b9b9b9b9b9b",
+                                        "name": "Brian Smith",
+                                        "email": "brian@example.com",
+                                        "age": 39,
+                                        "roles": [
+                                            "admin",
+                                            "user"
+                                        ],
+                                        "last_updated": "2020-11-01 00:00:00"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Created a new user",
+                        "content": {
+                            "application/json": {
+                                "example": [
+                                    {
+                                        "id": "5f9f1b9b9b9b9b9b9b9b9b9b",
+                                        "name": "Brian Smith",
+                                        "email": "brian@example.com",
+                                        "age": 39,
+                                        "roles": [
+                                            "admin",
+                                            "user"
+                                        ],
+                                        "last_updated": "2020-11-01 00:00:00"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "JSONResponseModel": {
+                "title": "JSONResponseModel",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "type": "string"
+                    },
+                    "age": {
+                        "title": "Age",
+                        "type": "integer"
+                    },
+                    "roles": {
+                        "title": "Roles",
+                        "type": "array",
+                        "items": {}
+                    },
+                    "last_updated": {
+                        "title": "Last Updated",
+                        "type": "string"
+                    }
+                },
+                "description": "Collection class for response models\n\n- See: https://fastapi.tiangolo.com/tutorial/response-model/#response-types-that-match-a-model-will-be-passed-to-the-correct-models-response_class",
+                "example": {
+                    "name": "Brian Smith",
+                    "email": "brian@example.com",
+                    "age": "39",
+                    "roles": [
+                        "admin",
+                        "user"
+                    ],
+                    "last_updated": "2020-11-01 00:00:00"
+                }
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,5 +1,7 @@
 # Description: Main entry point for the application
 # -----------------------------------------------------------------------------
+import json
+
 import dotenv
 import os
 import uvicorn
@@ -41,6 +43,15 @@ from routes.index import root
 from routes.users import users
 
 
+# -----------------------------------------------------------------------------
+# Generate the OpenAPI Schema and save to file: api-docs/openapi.yaml
+openapi_schema = app.openapi()
+openapi_schema["info"]["title"] = "FastAPI, GraphQL, MongoDB Demo API"
+openapi_schema["info"]["version"] = "0.0.1"
+openapi_schema["info"]["description"] = "This is a demo API for FastAPI, GraphQL, MongoDB"
+
+with open("api-docs/openapi.yaml", "w") as f:
+    f.write(json.dumps(openapi_schema, indent=4))
 # -----------------------------------------------------------------------------
 # Main entry point
 if __name__ == "__main__":

@@ -1,0 +1,21 @@
+name: Testing FastAPI, GraphQL, MongoDB, using Docker Compose
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Compose
+        uses: docker/compose-action@v1
+        with:
+          args: up -d --build --remove-orphans --force-recreate
+      - name: Execute tests
+        run: docker-compose run app pytest

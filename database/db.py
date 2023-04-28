@@ -58,6 +58,7 @@ def connect_to_mongo():
 
 
 def init_db():
+    responses = []
     try:
         log.info("\nInitializing the database with demo user data, for use with testing and querying...\n")
         # Create the fixtures
@@ -68,7 +69,7 @@ def init_db():
             age=39,
             roles=["admin", "user"]
         )
-        brian.save()
+        responses += {"brian": brian.save()}
 
         john = UserModel(
             name="John Doe",
@@ -77,7 +78,7 @@ def init_db():
             age=25,
             roles=["subscriber", "user"]
         )
-        john.save()
+        responses += {"john": john.save()}
 
         jane = UserModel(
             name="Jane Doe",
@@ -86,7 +87,7 @@ def init_db():
             age=27,
             roles=["subscriber", "user"]
         )
-        jane.save()
+        responses += {"jane": jane.save()}
 
         alice = UserModel(
             name="Alice Jones",
@@ -95,7 +96,7 @@ def init_db():
             age=23,
             roles=["subscriber", "user"]
         )
-        alice.save()
+        responses += {"alice": alice.save()}
 
         bob = UserModel(
             name="Bob Smith",
@@ -104,7 +105,7 @@ def init_db():
             age=24,
             roles=["subscriber", "user"]
         )
-        bob.save()
+        responses += {"bob": bob.save()}
 
         james = UserModel(
             name="James Cook",
@@ -113,9 +114,9 @@ def init_db():
             age=29,
             roles=["subscriber", "user"]
         )
-        james.save()
+        responses += {"james": james.save()}
 
-        for user in UserModel.objects[:1]:
+        for user in UserModel.objects[:6]:
             log.info(
                 "%s" %
                 json.dumps(
@@ -127,4 +128,5 @@ def init_db():
                 )
             )
     except Exception:
-        pass
+        log.error("Error initializing the database.")
+        log.error(responses, exc_info=traceback.format_exc(), stack_info=True)

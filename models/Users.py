@@ -1,6 +1,8 @@
+import json
 import time
+import traceback
 from mongoengine import Document
-from mongoengine.errors import NotUniqueError
+from mongoengine.errors import NotUniqueError, DoesNotExist, ValidationError, MongoEngineException
 from mongoengine.fields import (
     StringField,
     DateTimeField,
@@ -36,11 +38,11 @@ class User(Document):
         try:
             self.password = hash_password(self.password)
             return super(User, self).save(*args, **kwargs)
-        except NotUniqueError as e:
-            log.error(f"Email already exists. {e}",
-                      exc_info=True,
-                      stack_info=True)
-            return {"error": f"Email already exists. {e}"}
+        except (MongoEngineException, ValidationError, NotUniqueError, DoesNotExist) as e:
+            error = {"error": f"Email already exists. {e}",
+                     "traceback": f"{traceback.format_exc()}"}
+            # log.error(f"{json.dumps(error,separators=(':', ','))}")
+            return error
 
 
 # -----------------------------------------------------------------------------
