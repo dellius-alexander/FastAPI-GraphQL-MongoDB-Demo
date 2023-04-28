@@ -19,12 +19,11 @@ RUN cd /app && \
     . /app/venv/bin/activate
 
 # Update pip and Install dependencies
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install -r /tmp/requirements.txt
+RUN python3 -m pip install --no-cache-dir --upgrade -r /tmp/requirements.txt pip
 
 # Tell system to use this venv as default
 ENV PATH="/app/venv/bin:$PATH"
 ENV RUN_PORT=8000
 
 # Start the app
-ENTRYPOINT ["python3", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+ENTRYPOINT ["python3", "-m", "uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8000", "--reload"]
