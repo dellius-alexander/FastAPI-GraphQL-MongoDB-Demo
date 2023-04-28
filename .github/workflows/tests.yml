@@ -38,8 +38,7 @@ jobs:
 
       - name: Execute tests
         run: |
-          python3 -m pytest 
-          
+          docker-compose exec -it app python3 -m pytest 
 
       - name: Stop containers
         if: always()
