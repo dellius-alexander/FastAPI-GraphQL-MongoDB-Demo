@@ -21,7 +21,7 @@
     },
     "file_handler": {
       "class": "MyLogger.Handlers.CustomTimedRotatingFileHandler",
-      "filename": "logs/logs.log",
+      "filename": "logs.log",
       "when": "midnight",
       "interval": 1,
       "backupCount": 0,

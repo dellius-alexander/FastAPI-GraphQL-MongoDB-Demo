@@ -24,10 +24,10 @@ log.info("\n%s\nStarting the application...\nGlobals: \n%s\n%s", ("-" * 90), glo
 # -----------------------------------------------------------------------------
 # Create a FastAPI instance
 app = FastAPI()
-
+# -----------------------------------------------------------------------------
 # Define the allowed origins for the CORS middleware
 origins = ["http://localhost", "http://localhost", "https://example.com", "http://0.0.0.0", "http://127.0.0.1"]
-
+# -----------------------------------------------------------------------------
 # Enable the CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -42,14 +42,12 @@ from routes.startup import startup_event
 from routes.index import root
 from routes.users import users
 
-
 # -----------------------------------------------------------------------------
 # Generate the OpenAPI Schema and save to file: api-docs/openapi.yaml
 openapi_schema = app.openapi()
 openapi_schema["info"]["title"] = "FastAPI, GraphQL, MongoDB Demo API"
 openapi_schema["info"]["version"] = "0.0.1"
 openapi_schema["info"]["description"] = "This is a demo API for FastAPI, GraphQL, MongoDB"
-
 with open("api-docs/openapi.json", "w") as f:
     f.write(json.dumps(openapi_schema, indent=4))
 # -----------------------------------------------------------------------------
@@ -67,3 +65,5 @@ if __name__ == "__main__":
         use_colors=True,
         env_file=os.path.join(os.path.dirname(__file__), ".env")
     )
+
+

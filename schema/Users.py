@@ -92,21 +92,20 @@ class Query(ObjectType):
                         roles=List(String)
                         )
 
-    def resolve_search(self, info, name=None, email=None, age=None, roles=None, **kwargs):
+    def resolve_search(self, info, **kwargs):
         try:
+            log.info("Keyword search: %s" % ["".join(f"{k}: {v}") for k, v in kwargs.items()])
             query = {}
-            if name:
-                query['name'] = name
-            if email:
-                query['email'] = email
-            if age:
-                query['age'] = age
-            if roles:
-                query['roles'] = {'$in': roles}
+            if kwargs.get('name'):
+                query['name'] = kwargs.get('name')
+            if kwargs.get('email'):
+                query['email'] = kwargs.get('email')
+            if kwargs.get('age'):
+                query['age'] = kwargs.get('age')
+            if kwargs.get('roles'):
+                query['roles'] = {'$in': kwargs.get('roles')}
             users_list = list(User.objects.filter(**query))
-
-            # users_list = list(User.objects.all())
-            log.info("users_list: %s" % users_list)
+            log.info("users_list: %s" % ["".join(f"{k}: {v.__getstate__()['_data']}") for k, v in enumerate(users_list)])
             return users_list
         except ConnectionError as e:
             # Handle MongoDB connection error

@@ -2,7 +2,7 @@ import traceback
 
 import bcrypt
 from mongoengine.fields import StringField
-from utils.hash import hash_password
+from hash import hash_password
 # Get the logger
 from MyLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)

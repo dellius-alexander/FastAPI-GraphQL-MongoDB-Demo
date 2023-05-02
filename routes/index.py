@@ -1,5 +1,4 @@
 from starlette.responses import HTMLResponse
-
 from main import app
 # Get the logger
 from MyLogger.Logger import getLogger as GetLogger

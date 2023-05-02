@@ -1,8 +1,8 @@
-import logging
-from typing import Literal
+from logging import Formatter, LogRecord
+from typing import Literal, Optional
 
 
-class CustomFormatter(logging.Formatter):
+class CustomFormatter(Formatter):
     """Custom Logging Formatter"""
 
     # Colors for log levels
@@ -14,24 +14,30 @@ class CustomFormatter(logging.Formatter):
         'CRITICAL': '\033[1;35m',  # magenta
     }
 
-    def __init__(self, format=None, datefmt=None, style: Literal['%'] = '%'):
-        # Overriding the 'format' method of the logging.Formatter class
-        logging.Formatter.__init__(self, fmt=format, datefmt=datefmt, style=style)
+    def __init__(self,
+                 format: Optional[str] ="[%(asctime)s] [%(levelname)s] [%(name)s][%(lineno)s]: %(message)s",
+                 datefmt: Optional[str] ="%Y-%m-%d %H:%M:%S",
+                 style: Literal['%'] = '%'):
 
-    def format(self, record: logging.LogRecord):
+        # Overriding the 'format' method of the logging.Formatter class
+        super().__init__(fmt=format, datefmt=datefmt, style=style, validate=True)
+
+    def format(self, record: LogRecord):
         """Format the log message
         :param record: the log record
         :return: the formatted log message
         """
         level_name = record.levelname
-        msg = logging.Formatter.format(self, record)
+        msg = Formatter.format(self, record)
         return '%s%s\033[1;0m' % (self.colors[level_name], msg)
 
-    def format_record(self, record: logging.LogRecord):
+    def format_record(self, record: LogRecord):
         """Format the log record and return the formatted record
         :param record: the log record
         :return: the formatted log record
         """
         record.msg = self.format(record)
         return record
+
+
 

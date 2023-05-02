@@ -6,6 +6,7 @@ from starlette.responses import JSONResponse
 from MyLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
 
+
 # -----------------------------------------------------------------------------
 class JSONResponseModel(JSONResponse, UserModel):
     """

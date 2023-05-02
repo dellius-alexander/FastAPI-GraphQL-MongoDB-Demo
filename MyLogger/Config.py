@@ -1,12 +1,14 @@
 import json
 import logging.config
 import os
-from typing import Union, Dict
+from typing import Union, Dict, Any
 
 
 class CustomConfig(logging.config):
+    concurrent_loggers = 0
+
     def __init__(self,
-                 config: Union[Dict] = json.load(open('logging.json')) if os.path.exists('logging.json') else None):
+                 config: Dict[Any, Any] = None):
         super().__init__(config)
 
     @classmethod

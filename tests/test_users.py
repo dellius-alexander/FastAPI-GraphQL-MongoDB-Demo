@@ -177,7 +177,6 @@ async def test_create_user():
     else:
         print("\nCreation Response: %s" % response.text)
 
-
 # # -----------------------------------------------------------------------------
 # @pytest.mark.asyncio
 # async def test_delete_user():
@@ -197,4 +196,3 @@ async def test_create_user():
 #     except Exception as e:
 #         print("\nException: %s" % e)
 #         print("\nTraceback: %s" % traceback.format_exc())
-
