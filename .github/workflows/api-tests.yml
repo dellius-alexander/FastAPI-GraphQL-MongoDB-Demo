@@ -24,12 +24,17 @@ jobs:
       MONGODB_DATABASE: Hyfi
       MONGO_EXPRESS_PORT: 8081
     steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup virtual environment
+      - name: Install dependencies
         run: |
-          if [ -f requirements.txt ]; then python3 -m pip install --upgrade -r requirements.txt pip; fi 
+          if [ -f requirements.txt ]; then python3 -m pip install --no-cache-dir --upgrade -r requirements.txt pip; fi 
           pip install -e src
 
       - name: Start docker compose
