@@ -29,20 +29,20 @@ jobs:
 
       - name: Setup virtual environment
         run: |
-          if [ -f requirements.txt ]; then python -m pip install --upgrade -r requirements.txt pip; fi 
-          pip install -e .
+          if [ -f requirements.txt ]; then python3 -m pip install --upgrade -r requirements.txt pip; fi 
+          pip install -e src
 
       - name: Start docker compose
         run: |
-          docker-compose up -d --build --remove-orphans --force-recreate
+          docker-compose up -d --build --remove-orphans --force-recreate 
           docker ps -a 
 
       - name: Execute tests
         run: |
           mkdir -p logs
-          docker-compose exec -it app python3 -m pytest > logs/pytest.log
-          cat logs/pytest.log          
-          pytest
+          docker-compose exec -it app python3 -m pytest > logs/pytest.log 2>&1
+          cat logs/pytest.log 
+          python3 -m pytest 
 
       - name: Stop containers
         if: always()
