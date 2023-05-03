@@ -38,6 +38,7 @@ jobs:
 
       - name: Execute tests
         run: |
+          mkdir -p logs
           docker-compose exec -it app python3 -m pytest > logs/pytest.log
           cat logs/pytest.log
 
