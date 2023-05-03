@@ -9,7 +9,7 @@ log = GetLogger(__name__)
 
 
 # -----------------------------------------------------------------------------
-root_url = "http://127.0.0.1:8000"
+root_url = "http://0.0.0.0:8000"
 user_url = root_url + "/user"
 print("\nroot_url: %s" % root_url)
 print("\nuser_url: %s" % user_url)

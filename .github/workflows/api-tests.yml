@@ -29,7 +29,8 @@ jobs:
 
       - name: Setup virtual environment
         run: |
-          if [ -f requirements.txt ]; then python3 -m pip install --no-cache-dir --upgrade -r requirements.txt pip; fi 
+          if [ -f requirements.txt ]; then python -m pip install --no-cache-dir --upgrade -r requirements.txt pip; fi 
+          pip install -e .
 
       - name: Start docker compose
         run: |
@@ -40,8 +41,8 @@ jobs:
         run: |
           mkdir -p logs
           docker-compose exec -it app python3 -m pytest > logs/pytest.log
-          cat logs/pytest.log
-          python3 -m pytest
+          cat logs/pytest.log          
+          pytest
 
       - name: Stop containers
         if: always()
