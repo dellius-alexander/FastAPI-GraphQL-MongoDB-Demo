@@ -15,13 +15,13 @@ jobs:
       matrix:
         python-version: [ "3.7", "3.8", "3.9", "3.10" ]
     env:
-      APP_PORT: 8000
-      APP_USER: alpha
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: developer
+      APP_PORT: ${{ github.event.inputs.APP_PORT }}
+      APP_USER: ${{ github.event.inputs.APP_USER }}
+      MONGODB_USERNAME: ${{ github.event.inputs.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ github.event.inputs.MONGODB_PASSWORD }}
       MONGODB_URL: mongo
       MONGODB_PORT: 27017
-      MONGODB_DATABASE: Hyfi
+      MONGODB_DATABASE: ${{ github.event.inputs.MONGODB_DATABASE }}
       MONGO_EXPRESS_PORT: 8081
     steps:
       - name: Checkout
@@ -41,6 +41,7 @@ jobs:
           mkdir -p logs
           docker-compose exec -it app python3 -m pytest > logs/pytest.log
           cat logs/pytest.log
+          python3 -m pytest --cov=app --cov-report=xml --cov-report=html --cov-report=term-missing --cov-fail-under=100
 
       - name: Stop containers
         if: always()
