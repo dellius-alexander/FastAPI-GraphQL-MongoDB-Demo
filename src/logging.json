@@ -7,7 +7,7 @@
       "datefmt": "%Y-%m-%d %H:%M:%S"
     },
     "CustomFormatter": {
-      "()": "MyLogger.Formatters.CustomFormatter",
+      "()": "myLogger.Formatters.CustomFormatter",
       "format": "[%(asctime)s] [%(levelname)s] [%(name)s][%(lineno)s]: %(message)s",
       "datefmt": "%Y-%m-%d %H:%M:%S",
       "style": "%"
@@ -20,8 +20,8 @@
       "formatter": "CustomFormatter"
     },
     "file_handler": {
-      "class": "MyLogger.Handlers.CustomTimedRotatingFileHandler",
-      "filename": "logs.log",
+      "class": "myLogger.Handlers.CustomTimedRotatingFileHandler",
+      "filename": "logs/app.log",
       "when": "midnight",
       "interval": 1,
       "backupCount": 0,

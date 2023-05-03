@@ -9,7 +9,7 @@ from graphene_mongo import MongoengineObjectType
 from mongoengine import NotUniqueError, DoesNotExist
 from models.Users import User
 # Get the logger
-from MyLogger.Logger import getLogger as GetLogger
+from myLogger.Logger import getLogger as GetLogger
 
 log = GetLogger(__name__)
 
@@ -94,7 +94,7 @@ class Query(ObjectType):
 
     def resolve_search(self, info, **kwargs):
         try:
-            log.info("Keyword search: %s" % ["".join(f"{k}: {v}") for k, v in kwargs.items()])
+            log.info("Keyword search: %s" % [kwargs.items()])
             query = {}
             if kwargs.get('name'):
                 query['name'] = kwargs.get('name')
@@ -166,3 +166,5 @@ class Query(ObjectType):
 # Create the GraphQL schema
 schema = Schema(query=Query, mutation=CreateUserMutation, types=[UserSchema])
 # -----------------------------------------------------------------------------
+
+

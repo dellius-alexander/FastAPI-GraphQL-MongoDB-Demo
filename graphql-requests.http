@@ -7,7 +7,7 @@ GET http://{{devServer}}/
 GRAPHQL http://{{devServer}}/user
 Content-Type: application/json
 
-{ search{ name, email, age, roles, password, lastUpdated } }
+{search{ name, email, age, roles, password, lastUpdated }}
 
 
 ### Request for user info for brian

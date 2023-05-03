@@ -1,8 +1,10 @@
 from starlette.responses import HTMLResponse
-from main import app
 # Get the logger
-from MyLogger.Logger import getLogger as GetLogger
+from myLogger.Logger import getLogger as GetLogger
+from fastapi import APIRouter
 log = GetLogger(__name__)
+
+router = APIRouter()
 
 # -----------------------------------------------------------------------------
 html = """
@@ -174,17 +176,24 @@ html = """
 
 
 # -----------------------------------------------------------------------------
-@app.get("/")
+@router.get(
+    path="/",
+    response_class=HTMLResponse,
+    summary="Root endpoint",
+    description="Root endpoint",
+    tags=["index"],
+    responses={
+        200: {"description": "OK"},
+        400: {"description": "Bad request"},
+        404: {"description": "Not found"},
+        500: {"description": "Internal server error"}
+    },
+)
 async def root() -> HTMLResponse:
+    """
+    Resolves the root/index endpoint with html content.
+    :return: HTMLResponse
+    """
     return HTMLResponse(html)
-# -----------------------------------------------------------------------------
-# # Define the index/root endpoint
-# @app.get("/")
-# async def root():
-#     return Response(
-#         content='{"message": "Hello, World!"}',
-#         status_code=200,
-#         headers={"Content-Type": "application/json"}
-#     )
 
 

@@ -12,7 +12,7 @@ from mongoengine.fields import (
 from pydantic import BaseModel
 from utils.hash import hash_password
 # Get the logger
-from MyLogger.Logger import getLogger as GetLogger
+from myLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
 
 

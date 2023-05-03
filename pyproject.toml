@@ -3,13 +3,13 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fastapi_graphql_demo"
-version = "1.1"
+name = "FastAPI-GraphQL-MongoDB-Demo"
+version = "0.1.0"
 description = "Demo of FastAPI and GraphQL integration"
 readme = { file = "README.md" }
 requires-python = ">=3.7"
 license = { file ="LICENSE" }
-scripts = { start ="uvicorn main:app --host 0.0.0.0 --port 8000 --reload" }
+scripts = { start ="python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload" }
 urls = {
     Homepage = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git",
     Bug_Tracker = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git/issues",

@@ -26,23 +26,18 @@ services:
       args:
         PORT: ${MONGO_EXPRESS_PORT}
     restart: always
+    hostname: "delliusalexander.com"
+    env_file:
+      - .env
     expose:
       - ${APP_PORT}
     ports:
       - ${APP_PORT}:${APP_PORT}
-    environment:
-      APP_USER: ${APP_USER}
-      MONGODB_USERNAME: alpha
-      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
-      MONGODB_HOST: mongo
-      MONGODB_PORT: ${MONGODB_PORT}
-      MONGODB_DATABASE: ${MONGODB_DATABASE}
-      PORT: ${MONGODB_PORT}
     depends_on:
       - mongo
-      - mongo-express
     volumes:
-      - .:/app
+      - ./src:/app
+#      - /usr/local/app/.certs:/usr/local/app/.certs:ro
 
   # Mongo Express service
   mongo-express:

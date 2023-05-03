@@ -1,6 +1,5 @@
 import logging.handlers
 import os
-import time
 from logging import LogRecord
 
 
@@ -16,7 +15,8 @@ class CustomTimedRotatingFileHandler(logging.handlers.TimedRotatingFileHandler):
                  utc=False,
                  atTime=None):
         super().__init__(
-            filename="logs/" + filename.split(".")[1] + "_" + time.strftime('%Y%m%d%H%M', time.localtime()) + "." + filename.split(".")[0],
+            # filename="logs/" + filename + "_" + time.strftime('%Y%m%d%H%M', time.localtime()) + "." + "log",
+            filename=filename,
             when=when,
             interval=interval,
             backupCount=backupCount,

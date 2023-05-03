@@ -4,22 +4,22 @@ from mongoengine import connect, ConnectionFailure
 import os
 from models.Users import User as UserModel
 # Get the logger
-from MyLogger.Logger import getLogger as GetLogger
+from myLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
 
 # Get the port from the environment variables
-MONGODB_USERNAME = os.getenv("APP_USER")
-MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD")
-MONGODB_DATABASE = os.getenv("MONGODB_DATABASE")
-MONGODB_URL = os.getenv("MONGODB_URL")
-MONGODB_PORT = os.getenv("MONGODB_PORT")
+MONGODB_USERNAME = os.getenv("APP_USER", "alpha")
+MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD", "developer")
+MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "Hyfi")
+MONGODB_URL = os.getenv("MONGODB_URL", "0.0.0.0")
+MONGODB_PORT = os.getenv("MONGODB_PORT", "27017")
 
 
 def connect_to_mongo():
     try:
-        connect(
+        client = connect(
             # the name of the database to use, for compatibility with connect
-            db="Hyfi",
+            db=MONGODB_DATABASE,
             # the host name of the: program: mongod instance to connect to
             # f"mongodb://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_IP_PORT}/{MONGODB_DATABASE}",
             host=f'mongodb://{MONGODB_URL}:{MONGODB_PORT}/{MONGODB_DATABASE}',
@@ -47,7 +47,16 @@ def connect_to_mongo():
             # # See the documentation for pymongo’s MongoClient for a full list.
             # kwargs=None,
         )
-        log.info("Connected to MongoDB")
+        if client:
+            log.info("Connected to MongoDB successfully.")
+            log.info(f"MongoDB connection: {client}")
+            result = client.admin.command('ping')
+            if result:
+                log.info(f"MongoDB ping result: {result}")
+            else:
+                log.error("Could not ping MongoDB.")
+        else:
+            log.error("Could not connect to MongoDB.")
         # The ping command is cheap and does not require auth.
         # client.admin.command('ping')
     except ConnectionFailure as e:
@@ -69,7 +78,7 @@ def init_db():
             age=39,
             roles=["admin", "user"]
         )
-        responses += {"brian": brian.save()}
+        responses.append({"brian": brian.save()})
 
         john = UserModel(
             name="John Doe",
@@ -78,7 +87,7 @@ def init_db():
             age=25,
             roles=["subscriber", "user"]
         )
-        responses += {"john": john.save()}
+        responses.append({"john": john.save()})
 
         jane = UserModel(
             name="Jane Doe",
@@ -87,7 +96,7 @@ def init_db():
             age=27,
             roles=["subscriber", "user"]
         )
-        responses += {"jane": jane.save()}
+        responses.append({"jane": jane.save()})
 
         alice = UserModel(
             name="Alice Jones",
@@ -96,7 +105,7 @@ def init_db():
             age=23,
             roles=["subscriber", "user"]
         )
-        responses += {"alice": alice.save()}
+        responses.append({"alice": alice.save()})
 
         bob = UserModel(
             name="Bob Smith",
@@ -105,7 +114,7 @@ def init_db():
             age=24,
             roles=["subscriber", "user"]
         )
-        responses += {"bob": bob.save()}
+        responses.append({"bob": bob.save()})
 
         james = UserModel(
             name="James Cook",
@@ -114,7 +123,7 @@ def init_db():
             age=29,
             roles=["subscriber", "user"]
         )
-        responses += {"james": james.save()}
+        responses.append({"james": james.save()})
 
         for user in UserModel.objects[:6]:
             log.info(
@@ -127,6 +136,7 @@ def init_db():
                     ensure_ascii=True
                 )
             )
+
     except Exception:
         log.error("Error initializing the database.")
         log.error(responses, exc_info=traceback.format_exc(), stack_info=True)

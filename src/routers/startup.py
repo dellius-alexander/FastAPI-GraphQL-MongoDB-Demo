@@ -1,13 +1,13 @@
-from main import app
 from database.db import connect_to_mongo, init_db
-from MyLogger.Logger import getLogger as GetLogger
+from myLogger.Logger import getLogger as GetLogger
+from fastapi import APIRouter
+# -----------------------------------------------------------------------------
 log = GetLogger(__name__)
+event = APIRouter()
 
 
 # -----------------------------------------------------------------------------
-@app.on_event("startup")
+@event.on_event("startup")
 async def startup_event():
     connect_to_mongo()
     init_db()
-    log.info("API Routes: %s" % app.routes)
-    log.info("Application started")

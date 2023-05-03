@@ -8,16 +8,31 @@
     "paths": {
         "/": {
             "get": {
-                "summary": "Root",
+                "tags": [
+                    "index"
+                ],
+                "summary": "Root endpoint",
+                "description": "Root endpoint",
                 "operationId": "root__get",
                 "responses": {
                     "200": {
-                        "description": "Successful Response",
+                        "description": "OK",
                         "content": {
-                            "application/json": {
-                                "schema": {}
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 }
             }

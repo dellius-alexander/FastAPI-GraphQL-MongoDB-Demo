@@ -2,9 +2,8 @@ docker-compose.yaml
 .dockerignore
 .gitignore
 test_main.http
-.devcontainer
+
 .vscode
 .github
 graphql-requests.http
 http-client.env.json
-/**/__pycache__
