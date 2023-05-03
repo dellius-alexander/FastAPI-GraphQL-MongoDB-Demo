@@ -33,7 +33,7 @@ matplotlib==3.5.3
 mccabe==0.7.0
 mongoengine==0.24.2
 mpmath==1.2.1
-numpy==1.23.2
+numpy
 packaging==21.3
 pandas==1.4.4
 pep517==0.13.0
