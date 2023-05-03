@@ -177,7 +177,8 @@ virtualenv = "^20.19.0"
 [integrations]
 mongodb = { version = "4.3.3" }
 
-
+[tool.setuptools.source]
+name = "src"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
