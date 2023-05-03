@@ -13,17 +13,10 @@ RUN apt-get update -y && \
 # Copy requirements.txt to the image
 COPY requirements.txt* /tmp/requirements.txt
 
-# Install virtual environment
-#RUN python3 -m venv /app/venv
-#RUN cd /app && \
-#    . /app/venv/bin/activate
-
 # Update pip and Install dependencies
 RUN python3 -m pip install --no-cache-dir --upgrade -r /tmp/requirements.txt pip
 
 # Tell system to use this venv as default
-ENV PATH="/app/venv/bin:$PATH"
-ENV RUN_PORT=8000
 RUN mkdir -p /entrypoint
 
 COPY .devcontainer/entrypoint/entrypoint.sh* /entrypoint/entrypoint.sh

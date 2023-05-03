@@ -8,11 +8,13 @@ from myLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
 
 # Get the port from the environment variables
-MONGODB_USERNAME = os.getenv("APP_USER", "alpha")
+MONGODB_USERNAME = os.getenv("MONGODB_USERNAME", "alpha")
 MONGODB_PASSWORD = os.getenv("MONGODB_PASSWORD", "developer")
+log.info("MONGODB_USERNAME: %s" % MONGODB_USERNAME)
+log.info("MONGODB_PASSWORD: %s" % MONGODB_PASSWORD)
 MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "Hyfi")
-MONGODB_URL = os.getenv("MONGODB_URL", "0.0.0.0")
-MONGODB_PORT = os.getenv("MONGODB_PORT", "27017")
+MONGODB_HOST = os.getenv("MONGODB_HOST", "0.0.0.0")
+MONGODB_PORT = os.getenv("MONGODB_PORT", 27017)
 
 
 def connect_to_mongo():
@@ -21,8 +23,8 @@ def connect_to_mongo():
             # the name of the database to use, for compatibility with connect
             db=MONGODB_DATABASE,
             # the host name of the: program: mongod instance to connect to
-            # f"mongodb://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_IP_PORT}/{MONGODB_DATABASE}",
-            host=f'mongodb://{MONGODB_URL}:{MONGODB_PORT}/{MONGODB_DATABASE}',
+            # f"mongodb://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_HOST}:{MONGODB_PORT}/{MONGODB_DATABASE}",
+            host=f"mongodb://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_HOST}:{MONGODB_PORT}/{MONGODB_DATABASE}",
             # the name that will be used to refer to this connection throughout MongoEngine
             alias="default",
             # the name of the specific database to use
@@ -58,7 +60,7 @@ def connect_to_mongo():
         else:
             log.error("Could not connect to MongoDB.")
         # The ping command is cheap and does not require auth.
-        # client.admin.command('ping')
+        return client
     except ConnectionFailure as e:
         log.error("Server not available.")
         log.error(e,

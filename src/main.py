@@ -1,19 +1,19 @@
 # Description: Main entry point for the application
 # -----------------------------------------------------------------------------
-import json
 import argparse
 import traceback
-from typing import Union
 import dotenv
 import os
 import uvicorn
 
 # Load environment variables
 dotenv.load_dotenv(
-    dotenv_path=os.path.join(os.path.dirname(__file__), ".env"),
+    dotenv_path=os.path.join(os.path.dirname(__file__), ".env") or dotenv.find_dotenv('.env', False, False),
     verbose=True,
     encoding="utf-8"
 )
+
+dotenv.find_dotenv('.env')
 
 # -----------------------------------------------------------------------------
 from fastapi import FastAPI
@@ -46,7 +46,7 @@ app.add_middleware(
 # Add the routes
 from routers import startup, index, users
 
-app.include_router(startup.event)
+app.add_event_handler("startup", startup.startup_event)
 app.include_router(index.router)
 app.include_router(users.router)
 

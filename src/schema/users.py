@@ -148,13 +148,12 @@ class Query(ObjectType):
                 for i, user in enumerate(users_list):
                     log.info("Deleting user: %s" % user.to_json())
                     response = user.delete()
-                    log.info("Delete response: %s" % response)
                     if not response:
-                        status = {i: ["success", user.to_json()]}
+                        status = {i: {"Deleted": user.to_json()}}
             else:
                 status = {"error": "No users found!"}
             log.info("status: %s" % status)
-            return [status]
+            return status
         except (ConnectionError, DoesNotExist) as e:
             # Handle MongoDB connection error
             log.error(f"Failed to connect to MongoDB: {e}",

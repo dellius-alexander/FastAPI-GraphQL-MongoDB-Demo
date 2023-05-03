@@ -1,5 +1,6 @@
-# Path: .devcontainer/mongo.Dockerfile
 # Place username and password in .env file, pass as environment variables, or password file
+# Paths: .devcontainer/mongo.Dockerfile, .devcontainer/app.Dockerfile, .devcontainer/config/mongo/mongod.conf, .devcontainer/config/mongo/mongo-init.js
+# Compare this snippet from .github/workflows/api-tests.yml, and set GitHub action environment variables
 version: '3.8'
 services:
   # MongoDB service
@@ -9,31 +10,38 @@ services:
       context: .
       dockerfile: .devcontainer/mongo.Dockerfile
     restart: always
+    expose:
+      - ${MONGODB_PORT}
     ports:
-      - '27017:27017'
+      - ${MONGODB_PORT}:${MONGODB_PORT}
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
     volumes:
-      - ./.devcontainer/config/mongo/mongod.conf:/etc/mongod.conf
-      - ./.devcontainer/config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./.devcontainer/mongo_data:/data/db
+#      - ./.devcontainer/config/mongo/mongod.conf:/etc/mongod.conf
+#      - ./.devcontainer/config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
   # Application service
   app:
     build:
       context: .
       dockerfile: .devcontainer/app.Dockerfile
-      args:
-        PORT: ${MONGO_EXPRESS_PORT}
     restart: always
-    hostname: "delliusalexander.com"
-    env_file:
-      - .env
     expose:
       - ${APP_PORT}
     ports:
       - ${APP_PORT}:${APP_PORT}
+    environment:
+      APP_USER: ${APP_USER}
+      MONGODB_HOST: ${MONGODB_HOST}
+      MONGODB_PORT: ${MONGODB_PORT}
+      MONGODB_USERNAME: ${APP_USER}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:-developer}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-hyfi}
     depends_on:
+      - mongo
+    links:
       - mongo
     volumes:
       - ./src:/app
@@ -46,9 +54,9 @@ services:
     ports:
       - ${MONGO_EXPRESS_PORT}:${MONGO_EXPRESS_PORT}
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root #| MongoDB admin username
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USERNAME} #| MongoDB admin username
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD} #| MongoDB admin password
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongo:${MONGODB_PORT}/
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${MONGODB_HOST}:${MONGODB_PORT}/
 #      ME_CONFIG_MONGODB_ENABLE_ADMIN: 'false'            #| Enable admin access to all databases. Send strings: `"true"` or `"false"`
 #      ME_CONFIG_MONGODB_SERVER: Hyfi                   #| MongoDB container name. Use comma delimited list of host names for replica sets.
 #      ME_CONFIG_MONGODB_AUTH_DATABASE: Hyfi            #| Database name

@@ -10,3 +10,4 @@ tests/logs/**
 /**/__pycache__
 
 
+/.devcontainer/mongo_data/
