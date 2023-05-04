@@ -54,7 +54,10 @@ MongoDB database management, FastAPI development, and Docker containerization:
 
    ```sh
    # Test data is loaded at initialization of application
-   curl -X POST http://localhost:8000/user -H "Content-Type: application/json" -d '{"query": { search(email: "brian@example.com") { name, email, age, roles, password, lastUpdated } }}'
+    curl -X POST http://localhost:8000/user \
+   -H "Content-Type: application/json" \
+   -d '{"query": "{ search(email: \"brian@example.com\") { name, email, age, roles, password, lastUpdated } }"}'
+
    ```
 5. Start coding your own GraphQL API in the `src` directory. Add you code to the `src` directory. Remember the entrypoint is `src/main.py`.
 
