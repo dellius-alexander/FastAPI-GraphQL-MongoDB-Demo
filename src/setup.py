@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open("../README.md", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
     print(long_description)
 
@@ -15,8 +15,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=find_packages(where="."),
+    package_dir={"": "."},
     license="LICENSE",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -34,7 +34,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'src = src.main:app'
+            'main = main:app'
         ]
     },
     include_package_data=True,
