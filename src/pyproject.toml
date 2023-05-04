@@ -10,11 +10,7 @@ readme = { file = "README.md" }
 requires-python = ">=3.7"
 license = { file ="LICENSE" }
 scripts = { start ="python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload" }
-urls = {
-    Homepage = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git",
-    Bug_Tracker = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git/issues",
-    # https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
-}
+keywords = ["FastAPI", "GraphQL", "MongoDB", "Python"]
 authors = [
   { name="Dellius Alexander", email="info@hyfisolutions.com", school="Clayton State University", Major="Computer Science"},
 ]
@@ -28,6 +24,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[project.urls]
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
+"Homepage" = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git"
+"Bug_Tracker" = "https://github.com/dellius-alexander/FastAPI-GraphQL-MongoDB-Demo.git/issues"
 
 [requires]
 files=["requirements.txt"]
