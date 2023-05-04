@@ -153,7 +153,7 @@ class Query(ObjectType):
             else:
                 status = {"error": "No users found!"}
             log.info("status: %s" % status)
-            return status
+            return [status]
         except (ConnectionError, DoesNotExist) as e:
             # Handle MongoDB connection error
             log.error(f"Failed to connect to MongoDB: {e}",

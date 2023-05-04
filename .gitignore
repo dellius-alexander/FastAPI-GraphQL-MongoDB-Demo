@@ -11,3 +11,6 @@ tests/logs/**
 
 
 /.devcontainer/mongo_data/
+/build/
+/dist/
+/src/FastAPI_GraphQL_MongoDB_Demo.egg-info/

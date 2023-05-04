@@ -88,7 +88,7 @@ async def query(_query: Union[Dict[str, Any]]) -> JSONResponse:
     elif isinstance(_query, Dict) and "mutation" in _query:
         # Execute the GraphQL query
         result = await user_schema.execute_async(_query["mutation"])
-        log.info("Response: %s" % [result])
+        log.info("Response: %s" % result)
         # Return the result as a JSON response
         if result.errors:
             err = JSONResponse(
