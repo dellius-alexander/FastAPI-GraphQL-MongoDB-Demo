@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install black pytest
+          python -m pip install black pytest pytest-asyncio 
           if [ -f requirements.txt ]; then pip install  -r requirements-dev.txt ; fi 
           
 
@@ -56,11 +56,23 @@ jobs:
           black --check src
 
       # Task for running tests
-      - name: Execute tests
+      - name: Execute build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pytest
+          python3 -m build
 
       # Task for stopping docker compose
       - name: Stop containers
         if: always()
         run: docker-compose down
+
+      # Task for uploading test results
+      - name: Upload build artifact
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build-Results
+          path: |
+            dist
+    
