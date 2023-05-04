@@ -55,10 +55,10 @@ jobs:
           black src 
           black --check src
 
-#      # Task for running tests
-#      - name: Execute tests
-#        run: |
-#          pytest
+      # Task for running tests
+      - name: Execute tests
+        run: |
+          pytest
 
       # Task for stopping docker compose
       - name: Stop containers
