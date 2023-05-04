@@ -1,6 +1,8 @@
 import bcrypt
+
 # Get the logger
 from myLogger.Logger import getLogger as GetLogger
+
 log = GetLogger(__name__)
 
 
@@ -16,7 +18,6 @@ def hash_password(password):
     # Generate a salt
     salt = bcrypt.gensalt()
     # Hash the password with the salt
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    log.info("Hashed password: %s" % hashed_password.decode('utf-8'))
-    return hashed_password.decode('utf-8')
-
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
+    log.info("Hashed password: %s" % hashed_password.decode("utf-8"))
+    return hashed_password.decode("utf-8")

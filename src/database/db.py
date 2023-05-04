@@ -3,8 +3,10 @@ import traceback
 from mongoengine import connect, ConnectionFailure
 import os
 from models.Users import User as UserModel
+
 # Get the logger
 from myLogger.Logger import getLogger as GetLogger
+
 log = GetLogger(__name__)
 
 # Get the port from the environment variables
@@ -52,7 +54,7 @@ def connect_to_mongo():
         if client:
             log.info("Connected to MongoDB successfully.")
             log.info(f"MongoDB connection: {client}")
-            result = client.admin.command('ping')
+            result = client.admin.command("ping")
             if result:
                 log.info(f"MongoDB ping result: {result}")
             else:
@@ -63,22 +65,22 @@ def connect_to_mongo():
         return client
     except ConnectionFailure as e:
         log.error("Server not available.")
-        log.error(e,
-                  exc_info=traceback.format_exc(),
-                  stack_info=True)
+        log.error(e, exc_info=traceback.format_exc(), stack_info=True)
 
 
 def init_db():
     responses = []
     try:
-        log.info("\nInitializing the database with demo user data, for use with testing and querying...\n")
+        log.info(
+            "\nInitializing the database with demo user data, for use with testing and querying...\n"
+        )
         # Create the fixtures
         brian = UserModel(
             name="Brian Smith",
             password="brian123",
             email="brian@example.com",
             age=39,
-            roles=["admin", "user"]
+            roles=["admin", "user"],
         )
         responses.append({"brian": brian.save()})
 
@@ -87,7 +89,7 @@ def init_db():
             password="john123",
             email="john@example.com",
             age=25,
-            roles=["subscriber", "user"]
+            roles=["subscriber", "user"],
         )
         responses.append({"john": john.save()})
 
@@ -96,7 +98,7 @@ def init_db():
             password="jane123",
             email="jane@example.com",
             age=27,
-            roles=["subscriber", "user"]
+            roles=["subscriber", "user"],
         )
         responses.append({"jane": jane.save()})
 
@@ -105,7 +107,7 @@ def init_db():
             password="alice123",
             email="alice@example.com",
             age=23,
-            roles=["subscriber", "user"]
+            roles=["subscriber", "user"],
         )
         responses.append({"alice": alice.save()})
 
@@ -114,7 +116,7 @@ def init_db():
             password="bob123",
             email="bob@example.com",
             age=24,
-            roles=["subscriber", "user"]
+            roles=["subscriber", "user"],
         )
         responses.append({"bob": bob.save()})
 
@@ -123,19 +125,19 @@ def init_db():
             password="james123",
             email="james@example.com",
             age=29,
-            roles=["subscriber", "user"]
+            roles=["subscriber", "user"],
         )
         responses.append({"james": james.save()})
 
         for user in UserModel.objects[:6]:
             log.info(
-                "%s" %
-                json.dumps(
+                "%s"
+                % json.dumps(
                     user.to_json(),
                     indent=4,
                     sort_keys=True,
                     allow_nan=True,
-                    ensure_ascii=True
+                    ensure_ascii=True,
                 )
             )
 

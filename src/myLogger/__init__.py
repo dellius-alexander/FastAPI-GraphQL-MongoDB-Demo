@@ -6,8 +6,8 @@ import logging
 
 # check if logging.json has been loaded
 if not logging.root.handlers:
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
+    if not os.path.exists("logs"):
+        os.mkdir("logs")
     # log_config = [f for f in log_json if os.path.exists(f)][0]
     with open("logging.json") as file:
         data = json.load(file)

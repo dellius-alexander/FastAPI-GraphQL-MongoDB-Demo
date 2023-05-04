@@ -3,13 +3,26 @@ import time
 import traceback
 from typing import Any, Dict
 
-from graphene import ObjectType, String, Schema, List, Field, InputObjectType, Mutation, relay, DateTime, Int, \
-    Boolean
+from graphene import (
+    ObjectType,
+    String,
+    Schema,
+    List,
+    Field,
+    InputObjectType,
+    Mutation,
+    relay,
+    DateTime,
+    Int,
+    Boolean,
+)
 from graphene_mongo import MongoengineObjectType
 from mongoengine import NotUniqueError, DoesNotExist
 from models.Users import User
+
 # Get the logger
 from myLogger.Logger import getLogger as GetLogger
+
 # -----------------------------------------------------------------------------
 log = GetLogger(__name__)
 
@@ -29,12 +42,14 @@ class CreateUserInput(InputObjectType):
     email = String(required=True)
     password = String(required=True)
     age = Int(required=True)
-    roles = List(String,
-                 default=["user"],
-                 description="List of roles assigned to user.")
-    last_updated = DateTime(required=False,
-                            default=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()),
-                            description="Last update date.")
+    roles = List(
+        String, default=["user"], description="List of roles assigned to user."
+    )
+    last_updated = DateTime(
+        required=False,
+        default=time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        description="Last update date.",
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -72,40 +87,49 @@ class UserMutations(ObjectType):
 # -----------------------------------------------------------------------------
 # Define the GraphQL schema
 class Query(ObjectType):
-    search = List(of_type=UserSchema,
-                  name=String(required=False),
-                  email=String(required=False),
-                  age=Int(required=False),
-                  roles=List(String, required=False)
-                  )
-    delete_users = List(of_type=UserSchema,
-                        name=String(required=False),
-                        email=String(required=False),
-                        age=Int(required=False),
-                        roles=List(String, required=False)
-                        )
-    create_users = List(of_type=UserSchema,
-                        name=String(),
-                        email=String(),
-                        password=String(),
-                        age=Int(),
-                        roles=List(String)
-                        )
+    search = List(
+        of_type=UserSchema,
+        name=String(required=False),
+        email=String(required=False),
+        age=Int(required=False),
+        roles=List(String, required=False),
+    )
+    delete_users = List(
+        of_type=UserSchema,
+        name=String(required=False),
+        email=String(required=False),
+        age=Int(required=False),
+        roles=List(String, required=False),
+    )
+    create_users = List(
+        of_type=UserSchema,
+        name=String(),
+        email=String(),
+        password=String(),
+        age=Int(),
+        roles=List(String),
+    )
 
     def resolve_search(self, info, **kwargs):
         try:
             log.info("Keyword search: %s" % [kwargs.items()])
             query = {}
-            if kwargs.get('name'):
-                query['name'] = kwargs.get('name')
-            if kwargs.get('email'):
-                query['email'] = kwargs.get('email')
-            if kwargs.get('age'):
-                query['age'] = kwargs.get('age')
-            if kwargs.get('roles'):
-                query['roles'] = {'$in': kwargs.get('roles')}
+            if kwargs.get("name"):
+                query["name"] = kwargs.get("name")
+            if kwargs.get("email"):
+                query["email"] = kwargs.get("email")
+            if kwargs.get("age"):
+                query["age"] = kwargs.get("age")
+            if kwargs.get("roles"):
+                query["roles"] = {"$in": kwargs.get("roles")}
             users_list = list(User.objects.filter(**query))
-            log.info("users_list: %s" % ["".join(f"{k}: {v.__getstate__()['_data']}") for k, v in enumerate(users_list)])
+            log.info(
+                "users_list: %s"
+                % [
+                    "".join(f"{k}: {v.__getstate__()['_data']}")
+                    for k, v in enumerate(users_list)
+                ]
+            )
             return users_list
         except ConnectionError as e:
             # Handle MongoDB connection error
@@ -115,32 +139,41 @@ class Query(ObjectType):
         if roles is None:
             roles = ["user"]
         try:
-            log.info("New User: %s" % {"name": name, "email": email, "password": password, "age": age, "roles": roles})
+            log.info(
+                "New User: %s"
+                % {
+                    "name": name,
+                    "email": email,
+                    "password": password,
+                    "age": age,
+                    "roles": roles,
+                }
+            )
             new_user = User(
-                name=name,
-                email=email,
-                password=password,
-                age=age,
-                roles=roles
+                name=name, email=email, password=password, age=age, roles=roles
             ).save()
-            log.info("New User Response: \n%s" % json.dumps(new_user.to_json(), indent=4))
+            log.info(
+                "New User Response: \n%s" % json.dumps(new_user.to_json(), indent=4)
+            )
             if new_user:
                 return [new_user]
         except (ConnectionError, DoesNotExist) as e:
             # Handle MongoDB connection error or user not found error
             raise Exception(f"Failed to create user: {e}")
 
-    def resolve_delete_users(self, info, name=None, email=None, age=None, roles=None, **kwargs):
+    def resolve_delete_users(
+        self, info, name=None, email=None, age=None, roles=None, **kwargs
+    ):
         try:
             query = {}
             if name:
-                query['name'] = name
+                query["name"] = name
             if email:
-                query['email'] = email
+                query["email"] = email
             if age:
-                query['age'] = age
+                query["age"] = age
             if roles:
-                query['roles'] = {'$in': roles}
+                query["roles"] = {"$in": roles}
             users_list = list(User.objects.filter(**query))
             log.info("users_list: %s" % users_list)
             status = Dict[Any, Any]
@@ -156,14 +189,14 @@ class Query(ObjectType):
             return [status]
         except (ConnectionError, DoesNotExist) as e:
             # Handle MongoDB connection error
-            log.error(f"Failed to connect to MongoDB: {e}",
-                      exc_info=traceback.format_exc(),
-                      stack_info=True)
+            log.error(
+                f"Failed to connect to MongoDB: {e}",
+                exc_info=traceback.format_exc(),
+                stack_info=True,
+            )
 
 
 # -----------------------------------------------------------------------------
 # Create the GraphQL schema
 schema = Schema(query=Query, mutation=CreateUserMutation, types=[UserSchema])
 # -----------------------------------------------------------------------------
-
-

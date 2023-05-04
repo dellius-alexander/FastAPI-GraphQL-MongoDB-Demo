@@ -1,7 +1,9 @@
 from starlette.responses import HTMLResponse
+
 # Get the logger
 from myLogger.Logger import getLogger as GetLogger
 from fastapi import APIRouter
+
 log = GetLogger(__name__)
 
 router = APIRouter()
@@ -186,7 +188,7 @@ html = """
         200: {"description": "OK"},
         400: {"description": "Bad request"},
         404: {"description": "Not found"},
-        500: {"description": "Internal server error"}
+        500: {"description": "Internal server error"},
     },
 )
 async def root() -> HTMLResponse:
@@ -195,5 +197,3 @@ async def root() -> HTMLResponse:
     :return: HTMLResponse
     """
     return HTMLResponse(html)
-
-

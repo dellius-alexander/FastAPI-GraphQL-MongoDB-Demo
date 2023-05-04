@@ -7,7 +7,6 @@ from src.myLogger.Logger import getLogger as GetLogger
 
 log = GetLogger(__name__)
 
-
 # -----------------------------------------------------------------------------
 root_url = "http://0.0.0.0:8000"
 user_url = root_url + "/user"
@@ -15,6 +14,7 @@ print("\nroot_url: %s" % root_url)
 print("\nuser_url: %s" % user_url)
 log.info("root_url: %s" % root_url)
 log.info("user_url: %s" % user_url)
+
 
 # -----------------------------------------------------------------------------
 @pytest.mark.asyncio
@@ -220,7 +220,6 @@ async def test_run_all():
     await user()
     await users()
     await create_user()
-
 
 # # -----------------------------------------------------------------------------
 # @pytest.mark.asyncio

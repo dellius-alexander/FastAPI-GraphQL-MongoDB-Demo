@@ -20,5 +20,3 @@ class UserResponse(JSONResponse):
                 "last_updated": "2020-02-01 00:00:00",
             },
         }
-
-

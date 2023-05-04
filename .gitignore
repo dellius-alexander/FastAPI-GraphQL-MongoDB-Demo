@@ -15,3 +15,4 @@ tests/logs/**
 /dist/
 /src/FastAPI_GraphQL_MongoDB_Demo.egg-info/
 /FastAPI_GraphQL_MongoDB_Demo.egg-info/
+/src/logs/

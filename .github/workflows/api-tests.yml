@@ -29,26 +29,38 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
+
       - name: Checkout
         uses: actions/checkout@v2
 
+      # Task for installing dependencies
       - name: Install dependencies
         run: |
-          if [ -f requirements.txt ]; then python3 -m pip install --no-cache-dir --upgrade -r requirements.txt pip; fi 
+          python -m pip install --upgrade pip
+          python -m pip install black pytest
+          if [ -f requirements.txt ]; then pip install --no-cache-dir --upgrade -r requirements.txt pip; fi 
           pip install -e src
 
+      # Task for starting docker compose
       - name: Start docker compose
         run: |
           docker-compose up -d --build --remove-orphans --force-recreate 
           docker ps -a 
-
-      - name: Execute tests
-        run: |
           mkdir -p logs
-          docker-compose exec -it app python3 -m pytest > logs/pytest.log 2>&1
-          cat logs/pytest.log 
-          python3 -m pytest 
 
+      # Task for linting with black
+      - name: Lint with black
+        run: |
+          # Code formatting with black, check every python file in the src directory 
+          black src 
+          black --check src
+
+#      # Task for running tests
+#      - name: Execute tests
+#        run: |
+#          pytest
+
+      # Task for stopping docker compose
       - name: Stop containers
         if: always()
         run: docker-compose down

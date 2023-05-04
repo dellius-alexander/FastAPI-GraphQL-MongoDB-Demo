@@ -1,6 +1,7 @@
 from database.db import connect_to_mongo, init_db
 from myLogger.Logger import getLogger as GetLogger
 from fastapi import APIRouter
+
 # -----------------------------------------------------------------------------
 log = GetLogger(__name__)
 event = APIRouter()
