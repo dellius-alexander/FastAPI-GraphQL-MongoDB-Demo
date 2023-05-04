@@ -1,5 +1,5 @@
 from mongoengine.fields import StringField
-from hash import hash_password
+from utils.hash import hash_password
 # Get the logger
 from myLogger.Logger import getLogger as GetLogger
 log = GetLogger(__name__)
