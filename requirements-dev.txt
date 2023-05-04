@@ -11,5 +11,6 @@ requests
 mongoengine
 pyOpenSSL
 pytest
+pytest-asyncio
 setuptools
 uvicorn
