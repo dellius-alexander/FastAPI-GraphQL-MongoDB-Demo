@@ -85,4 +85,6 @@ jobs:
             FastAPI_GraphQL_MongoDB_Demo.egg-info
             tests/logs
             src/logs
+            README.md
+            LICENSE
     
