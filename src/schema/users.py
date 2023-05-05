@@ -13,12 +13,12 @@ from graphene import (
     Mutation,
     relay,
     DateTime,
-    Int,
-    Boolean,
+    Int
 )
 from graphene_mongo import MongoengineObjectType
 from mongoengine import NotUniqueError, DoesNotExist
 from models.Users import User
+from utils.hash import check_password
 
 # Get the logger
 from myLogger.Logger import getLogger as GetLogger
@@ -94,6 +94,7 @@ class Query(ObjectType):
         age=Int(required=False),
         roles=List(String, required=False),
     )
+
     delete_users = List(
         of_type=UserSchema,
         name=String(required=False),
@@ -101,7 +102,17 @@ class Query(ObjectType):
         age=Int(required=False),
         roles=List(String, required=False),
     )
+
     create_users = List(
+        of_type=UserSchema,
+        name=String(),
+        email=String(),
+        password=String(),
+        age=Int(),
+        roles=List(String),
+    )
+
+    update_users = List(
         of_type=UserSchema,
         name=String(),
         email=String(),
@@ -162,7 +173,7 @@ class Query(ObjectType):
             raise Exception(f"Failed to create user: {e}")
 
     def resolve_delete_users(
-        self, info, name=None, email=None, age=None, roles=None, **kwargs
+        self, info, name=None, email=None, age=None, roles=None
     ):
         try:
             query = {}
@@ -185,6 +196,47 @@ class Query(ObjectType):
                         status = {i: {"Deleted": user.to_json()}}
             else:
                 status = {"error": "No users found!"}
+            log.info("status: %s" % status)
+            return [status]
+        except (ConnectionError, DoesNotExist) as e:
+            # Handle MongoDB connection error
+            log.error(
+                f"Failed to connect to MongoDB: {e}",
+                exc_info=traceback.format_exc(),
+                stack_info=True,
+            )
+
+    def resolve_update_users(
+        self, info, name=None, email=None, password=None, age=None, roles=None
+    ):
+        try:
+            query = {}
+            # if name:
+            #     query["name"] = name
+            if email:
+                query["email"] = email
+            # if age:
+            #     query["age"] = age
+            # if roles:
+            #     query["roles"] = {"$in": roles}
+            # if password:
+            #     query["password"] = password
+            users_list = list(User.objects.filter(**query))
+            log.info("users_list: %s" % users_list)
+            status = None
+            if len(users_list) > 0:
+                for i, user in enumerate(users_list):
+                    log.info("Updating user: %s" % user.to_json())
+                    if user.email == email:
+                        user.name = name if name is not None and name != user.name else user.name
+                        user.password = password if password is not None and not check_password(password, user.password) \
+                            else user.password
+                        user.age = age if age is not None and age != user.age else user.age
+                        user.roles = roles if roles is not None and roles != user.roles else user.roles
+                        status = user.update()
+                    log.info("Response: %s" % status)
+            else:
+                status = {"errors": "No users found!"}
             log.info("status: %s" % status)
             return [status]
         except (ConnectionError, DoesNotExist) as e:
