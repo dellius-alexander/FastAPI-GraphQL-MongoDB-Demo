@@ -4,7 +4,7 @@ fastapi
 graphene
 graphene-mongo
 graphql-core
-python-dotenv
 mongoengine
+python-dotenv
 pyOpenSSL
 uvicorn

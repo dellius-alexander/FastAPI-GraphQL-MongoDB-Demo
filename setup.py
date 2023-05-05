@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-    print(long_description)
+    # print(long_description)
 
 setup(
     name="FastAPI_GraphQL_MongoDB_Demo",

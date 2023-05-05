@@ -62,6 +62,13 @@ jobs:
         run: |
           python3 -m build
 
+      # Task for running tests
+      - name: Execute tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pytest 
+
       # Task for stopping docker compose
       - name: Stop containers
         if: always()
