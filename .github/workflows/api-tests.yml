@@ -82,4 +82,7 @@ jobs:
           name: Build-Results
           path: |
             dist
+            FastAPI_GraphQL_MongoDB_Demo.egg-info
+            tests/logs
+            src/logs
     
