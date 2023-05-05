@@ -185,13 +185,13 @@ class Query(ObjectType):
                 query["roles"] = {"$in": roles}
             users_list = list(User.objects.filter(**query))
             log.info("users_list: %s" % users_list)
-            status = list({})
+            status = list()
             if len(users_list) > 0:
                 for i, user in enumerate(users_list):
                     log.info("Deleting user: %s" % user.to_json())
                     response = user.delete()
                     if not response:
-                        status.append({"Deleted": user.to_json()})
+                        status.append(response)
             else:
                 status.append({"error": "No users found!"})
             log.info("status: %s" % status)
