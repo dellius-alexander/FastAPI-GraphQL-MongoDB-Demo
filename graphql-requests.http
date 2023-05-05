@@ -27,7 +27,14 @@ Content-Type: application/json
 { createUsers(name: "Jackie Brown", email: "jackie@example.com", password: "jackie123", age: 21, roles: ["subscriber","user"]) { name, email, password, age, roles } }
 
 
-#### Delete user from db
+### Request to update user in db
+GRAPHQL http://{{devServer}}/user
+Content-Type: application/json
+
+{ updateUsers(name: "Jackie Brown", email: "jackie@example.com", password: "123jackie", age: 31, roles: ["subscriber","user"]) { name, email, password, age, roles } }
+
+
+### Delete user from db
 // We just write a GraphQL query in the request body
 GRAPHQL http://{{devServer}}/user
 Content-Type: application/json
