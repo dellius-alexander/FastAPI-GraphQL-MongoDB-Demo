@@ -23,7 +23,7 @@ MongoDB database management, FastAPI development, and Docker containerization:
 - [GraphQL Documentation](https://graphql.org/learn/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [Docker Documentation](https://docs.docker.com/) 
-- [Docker Compose Documentation](https://docs.docker.com/compose/) (optional)
+- [Docker Compose Documentation](https://docs.docker.com/compose/) (preferred)
 - [MongoDB Express Documentation](https://github.com/mongo-express/mongo-express) (optional)
 - [Postman](https://www.postman.com/downloads/) (optional)
 
@@ -53,7 +53,7 @@ MongoDB database management, FastAPI development, and Docker containerization:
        python3 -m uvicorn  src.main:app --proxy-headers  --host "0.0.0.0" --port 8000 --reload
      ```
      
-4. Test the GraphQL API using the GraphiQL interface at http://localhost:8000/user
+4. Test the GraphQL API using the GraphQL interface at http://localhost:8000/user
    - *Note: You can specify any name for the GraphQL API endpoint*
 
    ```sh
