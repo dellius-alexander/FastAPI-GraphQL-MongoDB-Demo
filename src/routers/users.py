@@ -113,6 +113,10 @@ async def query(_query: Union[Dict[str, Any]]) -> JSONResponse:
         # Execute the GraphQL query
         result = await user_schema.execute_async(_query["mutation"])
         log.info("Response: %s" % result)
+        # TODO: Fix this error handling for delete mutations (no data); \
+        #  all other mutations return data (insert, update), but for some \
+        #  reason delete does not return data or we may need to generate some \
+        #  data to return
         # Return the result as a JSON response
         if result.errors:
             err = JSONResponse(
@@ -131,7 +135,7 @@ async def query(_query: Union[Dict[str, Any]]) -> JSONResponse:
             return err
         else:
             resp = JSONResponse(
-                content={"data": result.data, "errors": result.errors},
+                content={"data": result.data, "errors": None},
                 status_code=200,
                 headers={"Content-Type": "application/json"},
                 media_type="application/json",
