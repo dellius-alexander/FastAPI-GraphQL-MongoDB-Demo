@@ -13,4 +13,5 @@ pyOpenSSL
 pytest
 pytest-asyncio
 setuptools
+urllib3==1.25.11
 uvicorn

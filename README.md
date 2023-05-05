@@ -40,15 +40,19 @@ MongoDB database management, FastAPI development, and Docker containerization:
     ```
 3. Start the FastAPI server, MongoDB database and Mongo Express Server
    - Start all services using docker-compose.yml file
-      ```sh
+      
+     ```sh
       docker-compose up -d --build --force-recreate --remove-orphans --renew-anon-volumes
-      ```
+     ```
+     
    - Start the FastAPI server locally and use docker-compose.yml file to start the MongoDB database and Mongo Express Server
-      ```sh
+      
+     ```sh
       # comment out the app service in docker-compose.yml file and run the below command
       # after restarting docker-compose, you can access the FastAPI server locally at http://localhost:8000
        python3 -m uvicorn  src.main:app --proxy-headers  --host "0.0.0.0" --port 8000 --reload
-      ```
+     ```
+     
 4. Test the GraphQL API using the GraphiQL interface at http://localhost:8000/user
    - *Note: You can specify any name for the GraphQL API endpoint*
 
@@ -59,5 +63,7 @@ MongoDB database management, FastAPI development, and Docker containerization:
    -d '{"query": "{ search(email: \"brian@example.com\") { name, email, age, roles, password, lastUpdated } }"}'
 
    ```
-5. Start coding your own GraphQL API in the `src` directory. Add you code to the `src` directory. Remember the entrypoint is `src/main.py`.
+   
+5. Start coding your own GraphQL API in the `src` directory. Add your code and modifications to the `src` directory. 
+Remember the entrypoint is `src/main.py` or `src.main:app`.
 

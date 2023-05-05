@@ -249,19 +249,19 @@ def get_parser():
 # Main entry point
 if __name__ == "__main__":
     # Parse the command line
-    # parser = get_parser()
-    # args = parser.parse_args()
+    parser = get_parser()
+    args = parser.parse_args()
     try:
         # Start the application
         uvicorn.run(
-            app="main:app",
-            host="0.0.0.0",
-            port=8000,
-            loop="auto",
+            app=args.app,
+            host=args.host,
+            port=args.port,
+            loop=args.loop,
             # log_level="debug",
-            reload=True,
-            use_colors=True,
-            proxy_headers=True,
+            reload=args.reload,
+            use_colors=args.use_colors,
+            proxy_headers=args.proxy_headers,
         )
     except Exception as e:
         print("Error: uvicorn module not found.")
