@@ -72,7 +72,7 @@ html = """
           <textarea 
             name="query" 
             id="query" 
-            placeholder="{users{name,email,age, lastUpdated}}" 
+            placeholder="{search{name,email,age, lastUpdated}}" 
             cols="100" rows="5" 
             wrap="soft" autofocus required /></textarea>
           <br />
@@ -84,12 +84,15 @@ html = """
         </div>
         <div class="mutation">
           <h2 style="text-align:center;">User Mutations</h2>
-          <label for="mutation">Create New User:</label>
+          <label for="mutation">Create/Update/Delete New User:</label>
           <br />
           <textarea 
             name="mutation" 
             id="mutation" 
-            placeholder='{createUser(name: "Jackie Brown", email: "jackie@example.com", age: 21, roles: ["subscriber","user"]) { name, email, age }}' 
+            placeholder='{createUser(name: "Jackie Brown", email: "jackie@example.com", 
+            age: 21, roles: ["subscriber","user"]) { name, email, age }}, {deleteUsers(ids: ["1","2","3"]) { ids }},
+            {updateUsers(id: "1", name: "Jackie Brown", email: "jackie@example.com", 
+            age: 21, roles: ["subscriber","user"]) { name, email, age }}' 
             cols="100" rows="5"  
             wrap="soft" autofocus required /></textarea>
           <br />
