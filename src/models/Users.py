@@ -54,7 +54,36 @@ class User(Document):
                 "error": f"Email already exists. {e}",
                 "traceback": f"{traceback.format_exc()}",
             }
-            # log.error(f"{json.dumps(error,separators=(':', ','))}")
+            return error
+
+    def update(self, *args, **kwargs):
+        try:
+            return super(User, self).save(*args, **kwargs)
+        except (
+            MongoEngineException,
+            ValidationError,
+            NotUniqueError,
+            DoesNotExist,
+        ) as e:
+            error = {
+                "error": f"{e}",
+                "traceback": f"{traceback.format_exc()}",
+            }
+            return error
+
+    def delete(self, **kwargs):
+        try:
+            return super(User, self).delete(**kwargs)
+        except (
+            MongoEngineException,
+            ValidationError,
+            NotUniqueError,
+            DoesNotExist,
+        ) as e:
+            error = {
+                "error": f"{e}",
+                "traceback": f"{traceback.format_exc()}",
+            }
             return error
 
 
