@@ -6,12 +6,16 @@ fastapi
 graphene
 graphene-mongo
 graphql-core
+jupyter
 python-dotenv
 requests
 mongoengine
+pymilvus
 pyOpenSSL
 pytest
 pytest-asyncio
 setuptools
+towhee
 urllib3==1.25.11
 uvicorn
+wheel

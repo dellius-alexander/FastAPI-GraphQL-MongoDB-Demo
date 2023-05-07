@@ -2,6 +2,20 @@
 # Paths: .devcontainer/mongo.Dockerfile, .devcontainer/app.Dockerfile, .devcontainer/config/mongo/mongod.conf, .devcontainer/config/mongo/mongo-init.js
 # Compare this snippet from .github/workflows/api-tests.yml, and set GitHub action environment variables
 version: '3.8'
+volumes:
+    mongo_data: null
+
+networks:
+  fastapi-mongo:
+    name: fastapi-mongo
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/24
+        - gateway: 172.26.0.1
+
+
 services:
   # MongoDB service
   mongo:
@@ -9,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/mongo.Dockerfile
+    container_name: mongo
     restart: always
     expose:
       - ${MONGODB_PORT:-27017}
@@ -18,15 +33,24 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME:-root}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD:-developer}
     volumes:
-      - ./.devcontainer/mongo_data:/data/db
+      - mongo_data:/data/db
 #      - ./.devcontainer/config/mongo/mongod.conf:/etc/mongod.conf
 #      - ./.devcontainer/config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+        - fastapi-mongo
+#    healthcheck:
+#      test: ["CMD", "mongo", "--quiet", "http://mongo/test", "--eval", "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'"]
+#      interval: 30s
+#      timeout: 20s
+#      retries: 5
+#      start_period: 30s
 
   # Application service
   app:
     build:
       context: .
       dockerfile: .devcontainer/app.Dockerfile
+    container_name: app
     restart: always
     expose:
       - ${APP_PORT:-8000}
@@ -41,16 +65,18 @@ services:
       MONGODB_DATABASE: ${MONGODB_DATABASE:-hyfi}
     depends_on:
       - mongo
-    links:
-      - mongo
     volumes:
       - ./src:/app
-#      - /usr/local/app/.certs:/usr/local/app/.certs:ro
+    networks:
+        - fastapi-mongo
 
   # Mongo Express service
   mongo-express:
     image: mongo-express:0.54.0
+    container_name: mongo-express
     restart: always
+    expose:
+      - ${MONGO_EXPRESS_PORT:-8081}
     ports:
       - ${MONGO_EXPRESS_PORT:-8081}:${MONGO_EXPRESS_PORT:-8081}
     environment:
@@ -76,6 +102,6 @@ services:
 #      ME_CONFIG_SITE_SSL_KEY_PATH     | ''             #| SSL key file.
     depends_on:
       - mongo
-    links:
-      - mongo
+    networks:
+        - fastapi-mongo
 

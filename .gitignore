@@ -16,5 +16,6 @@ tests/logs/**
 /src/FastAPI_GraphQL_MongoDB_Demo.egg-info/
 /FastAPI_GraphQL_MongoDB_Demo.egg-info/
 /src/logs/**
-
+/**/.DS_Store
 !/src/logs/
+src/Resources/datasets/**

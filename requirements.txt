@@ -6,5 +6,6 @@ graphene-mongo
 graphql-core
 mongoengine
 python-dotenv
+pymilvus
 pyOpenSSL
 uvicorn
