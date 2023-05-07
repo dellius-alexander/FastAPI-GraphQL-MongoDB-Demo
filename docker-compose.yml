@@ -2,6 +2,16 @@
 # Paths: .devcontainer/mongo.Dockerfile, .devcontainer/app.Dockerfile, .devcontainer/config/mongo/mongod.conf, .devcontainer/config/mongo/mongo-init.js
 # Compare this snippet from .github/workflows/api-tests.yml, and set GitHub action environment variables
 version: '3.8'
+networks:
+  fastapi-mongo:
+    name: fastapi-mongo
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/26
+        - gateway: 172.26.0.1
+
 services:
   # MongoDB service
   mongo:
@@ -21,6 +31,8 @@ services:
       - ./.devcontainer/mongo_data:/data/db
 #      - ./.devcontainer/config/mongo/mongod.conf:/etc/mongod.conf
 #      - ./.devcontainer/config/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+        - fastapi-mongo
 
   # Application service
   app:
@@ -46,6 +58,8 @@ services:
     volumes:
       - ./src:/app
 #      - /usr/local/app/.certs:/usr/local/app/.certs:ro
+    networks:
+        - fastapi-mongo
 
   # Mongo Express service
   mongo-express:
@@ -78,4 +92,5 @@ services:
       - mongo
     links:
       - mongo
-
+    networks:
+        - fastapi-mongo

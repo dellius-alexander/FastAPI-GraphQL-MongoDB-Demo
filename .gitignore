@@ -18,3 +18,11 @@ tests/logs/**
 /src/logs/**
 
 !/src/logs/
+
+/**/.ipynb_checkpoints
+/.devcontainer/bookkeeper_data/
+/.devcontainer/etcd_data/
+/.devcontainer/milvus_data/
+/.devcontainer/minio_data/
+/.devcontainer/mysql_data/
+/.devcontainer/zookeeper_data/
